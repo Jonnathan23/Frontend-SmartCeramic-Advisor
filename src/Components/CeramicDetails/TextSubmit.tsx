@@ -41,10 +41,10 @@ export default function TextSubmit({ setTextChat }: TextSubmitProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit(handleSubmitDescription)}>
-            <div>
-                <label htmlFor="mensaje">Descripcion</label>
-                <input type="text" {...register("mensaje", {
+        <form onSubmit={handleSubmit(handleSubmitDescription)} className="ceramic-chat-form">
+            <div className="ceramic-chat-form__group">
+                <label className="ceramic-chat-form__label" htmlFor="mensaje">Descripcion</label>
+                <input className="ceramic-chat-form__input" type="text" {...register("mensaje", {
                     required: "El mensaje es obligatorio",
                     minLength: {
                         value: 5,
@@ -57,7 +57,9 @@ export default function TextSubmit({ setTextChat }: TextSubmitProps) {
                 })} />
                 {errors.mensaje && <ErrorMessage>{errors.mensaje.message}</ErrorMessage>}
             </div>
-            <button type="submit" disabled={isPending}>{isPending ? "Enviando..." : "Enviar"}</button>
+            <button className={`ceramic-chat-form__button ${isPending ? "ceramic-chat-form__button--disabled" : ""
+                }`} type="submit" disabled={isPending}>{isPending ? "Enviando..." : "Enviar"}</button>
+
         </form>
     );
 }

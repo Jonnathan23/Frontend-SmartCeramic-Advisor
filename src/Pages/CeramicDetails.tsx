@@ -21,7 +21,7 @@ export default function CeramicDetails() {
                 <ImageSubmit setCeramic={setCeramic} />
             </section>
 
-            <section>
+            <section className="ceramic-chat">
                 <h3>Chat</h3>
                 <TextSubmit setTextChat={setTextChat} />
                 {textChat.map((message, index) =>
