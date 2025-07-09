@@ -1,7 +1,7 @@
 import { useState } from "react";
-import ImageSubmit from "../Components/ImageSubmit";
+import ImageSubmit from "../Components/CeramicDetails/ImageSubmit";
 import type { CeramicDetails } from "../types";
-import ProductsDetails from "../Components/ProductsDetails";
+import ProductsDetails from "../Components/CeramicDetails/ProductsDetails";
 
 export default function CeramicDetails() {
     const [ceramic, setCeramic] = useState<CeramicDetails | null>(null);

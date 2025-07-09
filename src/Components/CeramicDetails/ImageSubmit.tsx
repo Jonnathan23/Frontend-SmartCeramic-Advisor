@@ -1,15 +1,15 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, type Dispatch } from 'react'
 import ReactCrop from 'react-image-crop'
 import type { PixelCrop, PercentCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { useMutation } from '@tanstack/react-query'
 
 import { toast } from 'react-toastify'
-import type { CeramicDetails } from '../types'
+import type { CeramicDetails } from '../../types'
 
 
 type ImageSubmitProps = {
-    setCeramic: React.Dispatch<React.SetStateAction<CeramicDetails | null>>
+    setCeramic: Dispatch<React.SetStateAction<CeramicDetails | null>>
 }
 
 export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {

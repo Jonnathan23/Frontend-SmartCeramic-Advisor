@@ -37,7 +37,7 @@ export const submitImage = async ({ file }: Pick<CeramicDetailsApi, "file">) => 
     }
 }
 
-export const submitCeramicDescription = async ({ description }: Pick<CeramicDetailsApi, "description">): Promise<CeramicDetails | undefined> => {
+export const submitCeramicDescription = async ({ description }: Pick<CeramicDetailsApi, "description">) => {
     try {
         const url = `/ceramica`;
         const { data } = await flaskApi.post(url, { description })
