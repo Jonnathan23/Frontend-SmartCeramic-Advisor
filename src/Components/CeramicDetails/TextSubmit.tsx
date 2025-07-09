@@ -36,16 +36,16 @@ export default function TextSubmit({ setTextChat }: TextSubmitProps) {
     })
 
     const handleSubmitDescription = (data: CeramicChatForm) => {
-        console.log("Descripcion enviada:", data.mensaje);
+        console.log("Descripcion enviada:", data);
         submitMutation({ formData: data });
     }
 
     return (
         <form onSubmit={handleSubmit(handleSubmitDescription)}>
             <div>
-                <label htmlFor="description">Descripcion</label>
+                <label htmlFor="mensaje">Descripcion</label>
                 <input type="text" {...register("mensaje", {
-                    required: "La descripcion es requerida",
+                    required: "El mensaje es obligatorio",
                     minLength: {
                         value: 5,
                         message: "La descripcion debe tener al menos 5 caracteres"

@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 
 import { toast } from 'react-toastify'
 import type { CeramicDetails } from '../../types'
+import { submitImage } from '../../services/CeramicDetails.api'
 
 
 type ImageSubmitProps = {
@@ -21,17 +22,13 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
     const imgRef = useRef<HTMLImageElement | null>(null);
 
     const { mutate: submitMutation, isPending, isError } = useMutation({
-        //TODO: mutationFn: submitImage,
-        mutationFn: async () => toast.info('Simulando envío de imagen'),
-        //TODO:
-        /*
+        mutationFn: submitImage,
         onSuccess: (data) => {
             setCeramic(data as CeramicDetails)
             toast.success('Imagen enviada correctamente');
-        },*/
-        //onSuccess: () => toast.success('Image uploaded successfully'),
-        onError: () => {
-            toast.error('Upload failed')
+        },
+        onError: (error) => {
+            toast.error(error.message || 'Fallo al enviar la imagen');
             setCeramic(null);
         }
     });
@@ -98,8 +95,7 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
             console.warn('No hay imagen recortada para enviar');
             return;
         }
-        //TODO: submitMutation({ file: croppedFile });
-        submitMutation();
+        submitMutation({ ceramicImageForm: { imagen: croppedFile } });
         console.log('Imagen enviada:', croppedFile);
     };
 
@@ -133,6 +129,7 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
                 >
                     <img ref={imgRef} src={imageSrc} alt="to be cropped" style={{ maxWidth: '100%', maxHeight: '60vh' }} />
                 </ReactCrop>
+
                 <button onClick={handleImageCrop} className="btn btn-success">
                     Guardar recorte
                 </button>
