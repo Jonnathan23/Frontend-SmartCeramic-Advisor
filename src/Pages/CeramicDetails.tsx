@@ -32,7 +32,12 @@ export default function CeramicDetails() {
             {ceramic ? (
                 <section>
                     <h3>Detalles de la Cerámica</h3>
-                    <p>Resument: {ceramic.resumen}</p>
+                    <div>
+                        <p>Resumen: </p>                        
+                        <MarkdownRenderer content={ceramic.resumen} />
+
+                    </div>
+
                     <p>Productos:</p>
                     <ul>
                         {
