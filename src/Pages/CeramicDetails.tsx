@@ -2,9 +2,12 @@ import { useState } from "react";
 import ImageSubmit from "../Components/CeramicDetails/ImageSubmit";
 import type { CeramicDetails } from "../types";
 import ProductsDetails from "../Components/CeramicDetails/ProductsDetails";
+import TextSubmit from "../Components/CeramicDetails/TextSubmit";
+import MarkdownRenderer from "../Components/CeramicDetails/MarkdownRenderer";
 
 export default function CeramicDetails() {
     const [ceramic, setCeramic] = useState<CeramicDetails | null>(null);
+    const [textChat, setTextChat] = useState<string[]>([]);
 
     return (
         <>
@@ -15,6 +18,13 @@ export default function CeramicDetails() {
                 Puedes subir una imagen de la ceramica que te gusta y nosotros te ayudaremos a encontrarla.
             </p>
             <ImageSubmit setCeramic={setCeramic} />
+            <section>
+                <h3>Chat</h3>
+                <TextSubmit setTextChat={setTextChat} />
+                {textChat.map((message, index) =>
+                    <MarkdownRenderer key={index} content={message} />
+                )}               
+            </section>
 
             {ceramic ? (
                 <section>

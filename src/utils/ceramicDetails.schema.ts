@@ -17,3 +17,12 @@ export const ceramicDetailsSchema = object({
     resumen: string(),
     productos: array(productsSchema)
 });
+
+
+
+//* Chat
+
+export const ceramicChatSchema = object({
+    respuesta: string(),
+    thread_id: string(),
+})

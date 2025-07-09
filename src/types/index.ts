@@ -1,16 +1,18 @@
 import { z } from 'zod';
-import type { ceramicDetailsSchema, productsSchema } from '../utils/ceramicDetails.schema';
+import type { ceramicChatSchema, ceramicDetailsSchema, productsSchema } from '../utils/ceramicDetails.schema';
 
 
 //* |-----------------| | CeramicDetails | |-----------------|
 
 export type CeramicDetails = z.infer<typeof ceramicDetailsSchema>;
 export type Products = z.infer<typeof productsSchema>;
+export type CeramicChat = z.infer<typeof ceramicChatSchema>
 
 export type CeramicImageForm = {
-    file: File;
+    imagen: File;
 }
 
-export type CeramicDescriptionForm = {
-    description: string;
+export type CeramicChatForm = {
+    mensaje: string;
+    thread_id?: string; //Nuevo --> enviar null
 }

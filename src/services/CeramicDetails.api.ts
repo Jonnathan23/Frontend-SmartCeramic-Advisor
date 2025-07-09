@@ -2,22 +2,22 @@
 //* Gets
 
 import { flaskApi } from "../lib/axios";
-import type { CeramicDetails } from "../types";
-import { ceramicDetailsSchema } from "../utils/ceramicDetails.schema";
+import type { CeramicChat, CeramicChatForm, CeramicDetails, CeramicImageForm } from "../types";
+import { ceramicChatSchema, ceramicDetailsSchema } from "../utils/ceramicDetails.schema";
 
 export type CeramicDetailsApi = {
-    file: File;
-    description: string;
+    ceramicImageForm: CeramicImageForm;
+    formData: CeramicChatForm
 }
 
 
 //* Posts
 
-export const submitImage = async ({ file }: Pick<CeramicDetailsApi, "file">) => {
+export const submitImage = async ({ ceramicImageForm }: Pick<CeramicDetailsApi, "ceramicImageForm">) => {
     try {
         const url = `/ceramica`;
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", ceramicImageForm.imagen);
 
         const { data } = await flaskApi.post(url, formData, {
             headers: {
@@ -37,14 +37,14 @@ export const submitImage = async ({ file }: Pick<CeramicDetailsApi, "file">) => 
     }
 }
 
-export const submitCeramicDescription = async ({ description }: Pick<CeramicDetailsApi, "description">) => {
+export const submitCeramicDescription = async ({ formData }: Pick<CeramicDetailsApi, "formData">) => {
     try {
         const url = `/ceramica`;
-        const { data } = await flaskApi.post(url, { description })
-        const response = ceramicDetailsSchema.safeParse(data);
+        const { data } = await flaskApi.post(url, formData)
+        const response = ceramicChatSchema.safeParse(data);
         if (!response.success) {
             console.error("Validation failed:", response.error);
-            return {} as CeramicDetails;
+            return {} as CeramicChat;
         }
         return response.data;
     } catch (error) {

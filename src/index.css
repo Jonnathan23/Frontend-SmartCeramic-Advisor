@@ -1,3 +1,21 @@
+:root {
+  /* Primary */
+  --marine-blue: rgb(2, 41, 90);
+  --purplish-blue: rgb(71, 61, 255);
+  --pastel-blue: rgb(173, 190, 255);
+  --light-blue: rgb(191, 226, 253);
+  --strawberry-red: rgb(237, 53, 72);
+
+  /* Neutral */
+  --cool-gray: rgb(150, 153, 171);
+  --light-gray: rgb(214, 217, 230);
+  --magnolia: rgb(240, 246, 255);
+  --alabaster: rgb(250, 251, 255);
+  --white: rgb(255, 255, 255);
+
+  /* Fonts */
+  --embed_code: "Varela Round", sans-serif;
+}
 
 html {
   font-size: 62.5%;
