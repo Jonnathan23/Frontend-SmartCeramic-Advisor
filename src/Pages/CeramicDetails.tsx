@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageSubmit from "../Components/CeramicDetails/ImageSubmit";
 import type { CeramicDetails } from "../types";
 import ProductsDetails from "../Components/CeramicDetails/ProductsDetails";
@@ -8,6 +8,17 @@ import MarkdownRenderer from "../Components/CeramicDetails/MarkdownRenderer";
 export default function CeramicDetails() {
     const [ceramic, setCeramic] = useState<CeramicDetails | null>(null);
     const [textChat, setTextChat] = useState<string[]>([]);
+    const [threadId, setThreadId] = useState<string>('');
+
+    useEffect(() => {
+        const storedThreadId = localStorage.getItem('ceramicThreadId');
+        if (storedThreadId) {
+            setThreadId(storedThreadId);
+        } else {
+            // Si no hay threadId guardado, inicializarlo
+            setThreadId('');
+        }
+    }, [])
 
     return (
         <>
@@ -23,7 +34,7 @@ export default function CeramicDetails() {
 
             <section className="ceramic-chat">
                 <h3>Chat</h3>
-                <TextSubmit setTextChat={setTextChat} />
+                <TextSubmit setTextChat={setTextChat} setThreadId={setThreadId} threadId={threadId} />
                 {textChat.map((message, index) =>
                     <MarkdownRenderer key={index} content={message} />
                 )}
@@ -33,7 +44,7 @@ export default function CeramicDetails() {
                 <section>
                     <h3>Detalles de la Cerámica</h3>
                     <div>
-                        <p>Resumen: </p>                        
+                        <p>Resumen: </p>
                         <MarkdownRenderer content={ceramic.resumen} />
 
                     </div>

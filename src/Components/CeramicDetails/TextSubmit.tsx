@@ -8,9 +8,11 @@ import { useMutation } from "@tanstack/react-query";
 
 type TextSubmitProps = {
     setTextChat: Dispatch<React.SetStateAction<string[]>>
+    setThreadId: Dispatch<React.SetStateAction<string>>
+    threadId: string
 }
 
-export default function TextSubmit({ setTextChat }: TextSubmitProps) {
+export default function TextSubmit({ setTextChat, setThreadId, threadId }: TextSubmitProps) {
     const defaultValues = {} as CeramicChatForm;
     const { register, reset, handleSubmit, formState: { errors } } = useForm<CeramicChatForm>({ defaultValues });
 
@@ -26,6 +28,7 @@ export default function TextSubmit({ setTextChat }: TextSubmitProps) {
 
             const newMessage = data.respuesta;
             setTextChat((prev) => [...prev, newMessage]);
+            setThreadId(data.thread_id);
 
             toast.success("Descripcion enviada correctamente");
             reset();
@@ -37,6 +40,7 @@ export default function TextSubmit({ setTextChat }: TextSubmitProps) {
 
     const handleSubmitDescription = (data: CeramicChatForm) => {
         console.log("Descripcion enviada:", data);
+        if (threadId) data.thread_id = threadId;
         submitMutation({ formData: data });
     }
 
