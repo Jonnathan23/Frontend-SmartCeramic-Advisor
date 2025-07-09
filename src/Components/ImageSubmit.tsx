@@ -5,8 +5,14 @@ import 'react-image-crop/dist/ReactCrop.css'
 import { useMutation } from '@tanstack/react-query'
 
 import { toast } from 'react-toastify'
+import type { CeramicDetails } from '../types'
 
-export default function ImageSubmit() {
+
+type ImageSubmitProps = {
+    setCeramic: React.Dispatch<React.SetStateAction<CeramicDetails | null>>
+}
+
+export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
     const [imageSrc, setImageSrc] = useState<string>('');
     const [croppedFile, setCroppedFile] = useState<File | null>(null);
     const [isCropping, setIsCropping] = useState<boolean>(false);
@@ -17,8 +23,17 @@ export default function ImageSubmit() {
     const { mutate: submitMutation, isPending, isError } = useMutation({
         //TODO: mutationFn: submitImage,
         mutationFn: async () => toast.info('Simulando envío de imagen'),
-        onSuccess: () => toast.success('Image uploaded successfully'),
-        onError: () => toast.error('Upload failed')
+        //TODO:
+        /*
+        onSuccess: (data) => {
+            setCeramic(data as CeramicDetails)
+            toast.success('Imagen enviada correctamente');
+        },*/
+        //onSuccess: () => toast.success('Image uploaded successfully'),
+        onError: () => {
+            toast.error('Upload failed')
+            setCeramic(null);
+        }
     });
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +98,7 @@ export default function ImageSubmit() {
             console.warn('No hay imagen recortada para enviar');
             return;
         }
-        //TODO:  submitMutation({ file: croppedFile });
+        //TODO: submitMutation({ file: croppedFile });
         submitMutation();
         console.log('Imagen enviada:', croppedFile);
     };
@@ -92,42 +107,39 @@ export default function ImageSubmit() {
 
     return (
         <section>
-            {!isCropping ? (
-                <>
-                    <h3>Imagen seleccionada</h3>
-                    {imageSrc && <img src={imageSrc} width={200} alt="preview" />}
-                    <input type="file" accept="image/*" onChange={handleImageChange} />
-                    {imageSrc && (
-                        <button onClick={() => setIsCropping(true)} className="btn btn-primary">
-                            Recortar imagen
-                        </button>
-                    )}
-                    {croppedFile && (
-                        <button onClick={handleSubmitImage} className="btn btn-success" disabled={isPending}>
-                            {isPending ? 'Enviando...' : 'Enviar imagen al backend'}
-                        </button>
-                    )}
-                    {isError && <p className="text-danger">Error al subir la imagen.</p>}
-                </>
-            ) : (
-                <>
-                    <h3>Recorte de imagen</h3>
-                    <ReactCrop
-                        crop={crop}
-                        onChange={(_, percentCrop) => setCrop(percentCrop)}
-                        onComplete={pixelCrop => setCompletedCrop(pixelCrop)}
-                        keepSelection
-                    >
-                        <img ref={imgRef} src={imageSrc} alt="to be cropped" style={{ maxWidth: '100%', maxHeight: '60vh' }} />
-                    </ReactCrop>
-                    <button onClick={handleImageCrop} className="btn btn-success">
-                        Guardar recorte
+            {!isCropping ? (<>
+                <h3>Imagen seleccionada</h3>
+                {imageSrc && <img src={imageSrc} width={200} alt="preview" />}
+                <input type="file" accept="image/*" onChange={handleImageChange} />
+                {imageSrc && (
+                    <button onClick={() => setIsCropping(true)} className="btn btn-primary">
+                        Recortar imagen
                     </button>
-                    <button onClick={() => setIsCropping(false)} className="btn btn-danger">
-                        Cancelar recorte
+                )}
+                {croppedFile && (
+                    <button onClick={handleSubmitImage} className="btn btn-success" disabled={isPending}>
+                        {isPending ? 'Enviando...' : 'Enviar imagen al backend'}
                     </button>
-                </>
-            )}
+                )}
+                {isError && <p className="text-danger">Error al subir la imagen.</p>}
+
+            </>) : (<>
+                <h3>Recorte de imagen</h3>
+                <ReactCrop
+                    crop={crop}
+                    onChange={(_, percentCrop) => setCrop(percentCrop)}
+                    onComplete={pixelCrop => setCompletedCrop(pixelCrop)}
+                    keepSelection
+                >
+                    <img ref={imgRef} src={imageSrc} alt="to be cropped" style={{ maxWidth: '100%', maxHeight: '60vh' }} />
+                </ReactCrop>
+                <button onClick={handleImageCrop} className="btn btn-success">
+                    Guardar recorte
+                </button>
+                <button onClick={() => setIsCropping(false)} className="btn btn-danger">
+                    Cancelar recorte
+                </button>
+            </>)}
         </section>
     );
 }
