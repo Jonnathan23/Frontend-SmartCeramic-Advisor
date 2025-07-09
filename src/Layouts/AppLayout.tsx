@@ -5,15 +5,17 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function AppLayout() {
     return (
         <>
-            <header>
-                <h1>SmartCeramic Advisor</h1>
-            </header>
-            <div>
-                <Outlet />
+            <div className="app-layout">
+                <header className="app-header">
+                    <h1>SmartCeramic Advisor</h1>
+                </header>
+                <div className="app-content">
+                    <Outlet />
+                </div>
+                <footer className="app-footer">
+                    <p>Copyright &copy; 2025</p>
+                </footer>
             </div>
-            <footer>
-                <p>Copyright &copy; 2025</p>
-            </footer>
             <ToastContainer
                 pauseOnHover={false}
                 pauseOnFocusLoss={false}
