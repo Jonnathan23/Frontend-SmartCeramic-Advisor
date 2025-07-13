@@ -3,7 +3,7 @@ import ImageSubmit from "../Components/CeramicDetails/ImageSubmit";
 import type { CeramicDetails } from "../types";
 import ProductsDetails from "../Components/CeramicDetails/ProductsDetails";
 import TextSubmit from "../Components/CeramicDetails/TextSubmit";
-import MarkdownRenderer from "../Components/CeramicDetails/MarkdownRenderer";
+import MarkdownRenderer from "../Components/MarkdownRenderer";
 
 export default function CeramicDetails() {
     const [ceramic, setCeramic] = useState<CeramicDetails | null>(null);

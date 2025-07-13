@@ -101,7 +101,7 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
 
     if (isError) return <p>Error al subir la imagen.</p>;
 
-    return (
+    return (  
         <section>
             {!isCropping ? (<>
                 <h3>Imagen seleccionada</h3>
