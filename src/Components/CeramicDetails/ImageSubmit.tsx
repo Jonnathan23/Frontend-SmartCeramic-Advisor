@@ -14,7 +14,8 @@ type ImageSubmitProps = {
 }
 
 export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
-    const [imageSrc, setImageSrc] = useState<string>('');
+    const initialImageSrc = 'selectImage.jpg'
+    const [imageSrc, setImageSrc] = useState<string>(initialImageSrc);
     const [croppedFile, setCroppedFile] = useState<File | null>(null);
     const [isCropping, setIsCropping] = useState<boolean>(false);
     const [crop, setCrop] = useState<PercentCrop>({ unit: '%', x: 0, y: 0, width: 100, height: 100 });
@@ -25,6 +26,7 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
         mutationFn: submitImage,
         onSuccess: (data) => {
             setCeramic(data as CeramicDetails)
+            localStorage.setItem('ceramicDetails', JSON.stringify(data));
             toast.success('Imagen enviada correctamente');
         },
         onError: (error) => {
@@ -99,15 +101,17 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
         console.log('Imagen enviada:', croppedFile);
     };
 
-    if (isError) return <p>Error al subir la imagen.</p>;
+    if (isError) return <p className='default-text'>Error al subir la imagen.</p>;
 
-    return (  
-        <section>
+    return (
+        <section className="image-submit">
             {!isCropping ? (<>
-                <h3>Imagen seleccionada</h3>
-                {imageSrc && <img src={imageSrc} width={200} alt="preview" />}
+                <h3 className='image-submit__title'>Imagen seleccionada</h3>
+                <div className='image-preview-container'>
+                    <img className='image-preview' src={imageSrc} width={200} alt="preview" />
+                </div>
                 <input type="file" accept="image/*" onChange={handleImageChange} />
-                {imageSrc && (
+                {imageSrc !== initialImageSrc && (
                     <button onClick={() => setIsCropping(true)} className="btn btn-primary">
                         Recortar imagen
                     </button>
@@ -120,7 +124,7 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
                 {isError && <p className="text-danger">Error al subir la imagen.</p>}
 
             </>) : (<>
-                <h3>Recorte de imagen</h3>
+                <h3 className='image-submit__title'>Recorte de imagen</h3>
                 <ReactCrop
                     crop={crop}
                     onChange={(_, percentCrop) => setCrop(percentCrop)}

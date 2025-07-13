@@ -12,58 +12,71 @@ export default function CeramicDetails() {
 
     useEffect(() => {
         const storedThreadId = localStorage.getItem('ceramicThreadId');
+        const storedCeramic = localStorage.getItem('ceramicDetails');
+        const ceramicData = storedCeramic ? JSON.parse(storedCeramic) : null;
+        const isThereTextChat = localStorage.getItem('ceramicTextChat');
+        const storedTextChat = isThereTextChat ? JSON.parse(isThereTextChat) : [] as string[];
+
+        if (ceramicData) {
+            setCeramic(ceramicData);
+        }
+
+        if (storedTextChat.length) {
+            setTextChat(storedTextChat);
+        }
+
         if (storedThreadId) {
             setThreadId(storedThreadId);
-        } else {
-            // Si no hay threadId guardado, inicializarlo
-            setThreadId('');
         }
     }, [])
 
     return (
         <>
-            <section className="ceramic-assistant">
-                <h2>Asistente de Ceramicas</h2>
-                <p>Encontrar la ceramica perfecta</p>
-                <p>
-                    Este asistente te ayudara a encontrar la ceramica perfecta para tu hogar.
-                    Puedes subir una imagen de la ceramica que te gusta y nosotros te ayudaremos a encontrarla.
-                </p>
-                <ImageSubmit setCeramic={setCeramic} />
-            </section>
+            <div className="ceramic-container">
+                <article className="ceramic-assistant">
+                    <h2 className="ceramic-assistant__title">Asistente de Ceramicas</h2>
+                    <p>Encontrar la ceramica perfecta</p>
+                    <p>
+                        Este asistente te ayudara a encontrar la ceramica perfecta para tu hogar.
+                        Puedes subir una imagen de la ceramica que te gusta y nosotros te ayudaremos a encontrarla.
+                    </p>
+                    <ImageSubmit setCeramic={setCeramic} />
+                </article>
 
-            <section className="ceramic-chat">
-                <h3>Chat</h3>
-                <TextSubmit setTextChat={setTextChat} setThreadId={setThreadId} threadId={threadId} />
-                {textChat.map((message, index) =>
-                    <MarkdownRenderer key={index} content={message} />
-                )}
-            </section>
-
-            {ceramic ? (
-                <section>
-                    <h3>Detalles de la Cerámica</h3>
-                    <div>
-                        <p>Resumen: </p>
-                        <MarkdownRenderer content={ceramic.resumen} />
-
-                    </div>
-
-                    <p>Productos:</p>
-                    <ul>
-                        {
-                            ceramic.productos.map((product, index) => (
-                                <li key={index}>
-                                    <ProductsDetails product={product} />
-                                </li>
-                            ))
-
-                        }
-                    </ul>
+                <section className="ceramic-chat">
+                    <h3>Chat</h3>
+                    <TextSubmit setTextChat={setTextChat} setThreadId={setThreadId} threadId={threadId} />
+                    {textChat.map((message, index) =>
+                        <MarkdownRenderer key={index} content={message} />
+                    )}
                 </section>
-            ) : (<>
-                <p>Sube una imagen de la ceramica que te gusta, o escribe los detalles para una recomendacion</p>
-            </>)}
+            </div>
+
+            <main>
+                {ceramic ? (
+                    <section className="ceramic-details">
+                        <h3 className="ceramic-details__title">Detalles de la Cerámica</h3>
+                        <div >
+                            <p>Resumen: </p>
+                            <MarkdownRenderer content={ceramic.resumen} />
+
+                        </div>
+                        <p>Productos:</p>
+                        <ul>
+                            {
+                                ceramic.productos.map((product, index) => (
+                                    <li key={index}>
+                                        <ProductsDetails product={product} />
+                                    </li>
+                                ))
+
+                            }
+                        </ul>
+                    </section>
+                ) : (<>
+                    <p className="default-text">Sube una imagen de la ceramica que te gusta, o escribe los detalles para una recomendacion</p>
+                </>)}
+            </main>
         </>
     );
 }

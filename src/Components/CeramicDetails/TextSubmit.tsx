@@ -27,9 +27,14 @@ export default function TextSubmit({ setTextChat, setThreadId, threadId }: TextS
             }
 
             const newMessage = data.respuesta;
-            setTextChat((prev) => [...prev, newMessage]);
-            setThreadId(data.thread_id);
+            localStorage.removeItem('ceramicTextChat');
+            setTextChat((prev) => {
+                const updatedChat = [...prev, newMessage];
+                localStorage.setItem('ceramicTextChat', JSON.stringify(updatedChat));
+                return [...updatedChat];
+            });
 
+            setThreadId(data.thread_id);
             toast.success("Descripcion enviada correctamente");
             reset();
         },
