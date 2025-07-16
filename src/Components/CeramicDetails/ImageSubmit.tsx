@@ -6,117 +6,139 @@ import type { UseFormSetValue } from 'react-hook-form'
 import type { CeramicForm } from '../../types'
 
 
-
 type ImageSubmitProps = {
     setValue: UseFormSetValue<CeramicForm>
 }
 
 export default function ImageSubmit({ setValue }: ImageSubmitProps) {
     const initialImageSrc = 'selectImage.jpg'
-    const [imageSrc, setImageSrc] = useState<string>(initialImageSrc);
-    const [croppedFile, setCroppedFile] = useState<File | null>(null);
-    const [isCropping, setIsCropping] = useState<boolean>(false);
-    const [crop, setCrop] = useState<PercentCrop>({ unit: '%', x: 0, y: 0, width: 100, height: 100 });
-    const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
-    const imgRef = useRef<HTMLImageElement | null>(null);
+    const [imageSrc, setImageSrc] = useState<string>(initialImageSrc)
+    //const [croppedFile, setCroppedFile] = useState<File | null>(null)
+    const [isCroppingMode, setIsCroppingMode] = useState<boolean>(false)
+    const [percentCrop, setPercentCrop] = useState<PercentCrop>({ unit: '%', x: 0, y: 0, width: 100, height: 100 })
+    const [pixelCrop, setPixelCrop] = useState<PixelCrop | null>(null)
+    const imageRef = useRef<HTMLImageElement | null>(null)
 
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]
+        if (!file) return
 
-
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        const reader = new FileReader();
-
+        const reader = new FileReader()
         reader.onloadend = () => {
-            // Vista previa
-            setImageSrc(reader.result as string);
-            // Reiniciar crop
-            setCrop({ unit: '%', x: 0, y: 0, width: 100, height: 100 });
-            setCompletedCrop(null);
-            setIsCropping(false);
-            // Guardar el archivo original para enviar si no recortan
-            setCroppedFile(file);            
-            setValue('imagen', file);
-        };
+            const previewUrl = reader.result as string
+            setImageSrc(previewUrl)
+            setPercentCrop({ unit: '%', x: 0, y: 0, width: 100, height: 100 })
+            setPixelCrop(null)
+            setIsCroppingMode(false)
+            // setCroppedFile(file)
+            setValue('imagen', file)
+        }
+        reader.readAsDataURL(file)
+    }
 
-        reader.readAsDataURL(file);
-    };
+    async function getCroppedBlob(image: HTMLImageElement, crop: PixelCrop): Promise<Blob> {
+        const { naturalWidth, naturalHeight, width: displayedWidth, height: displayedHeight } = image
+        const scaleX = naturalWidth / displayedWidth
+        const scaleY = naturalHeight / displayedHeight
+        const actualCrop = {
+            x: crop.x * scaleX,
+            y: crop.y * scaleY,
+            width: crop.width * scaleX,
+            height: crop.height * scaleY
+        }
 
-    const handleImageCrop = useCallback(() => {
-        if (!completedCrop || !imgRef.current) return;
-        const image = imgRef.current;
-        const scaleX = image.naturalWidth / image.width;
-        const scaleY = image.naturalHeight / image.height;
-        const pixelCrop = {
-            x: completedCrop.x * scaleX,
-            y: completedCrop.y * scaleY,
-            width: completedCrop.width * scaleX,
-            height: completedCrop.height * scaleY,
-        };
-        const canvas = document.createElement('canvas');
-        canvas.width = pixelCrop.width;
-        canvas.height = pixelCrop.height;
-        const ctx = canvas.getContext('2d')!;
+        const canvas = document.createElement('canvas')
+        canvas.width = Math.round(actualCrop.width)
+        canvas.height = Math.round(actualCrop.height)
+
+        const ctx = canvas.getContext('2d')
+        if (!ctx) throw new Error('No canvas context')
+
         ctx.drawImage(
             image,
-            pixelCrop.x,
-            pixelCrop.y,
-            pixelCrop.width,
-            pixelCrop.height,
+            actualCrop.x,
+            actualCrop.y,
+            actualCrop.width,
+            actualCrop.height,
             0,
             0,
-            pixelCrop.width,
-            pixelCrop.height
-        );
-        canvas.toBlob(blob => {
-            if (!blob) return;
-            // crear File desde Blob
-            const file = new File([blob], 'cropped.jpg', { type: 'image/jpeg' });
-            setCroppedFile(file);
-            
-            // actualizar preview
-            const dataUrl = URL.createObjectURL(blob);
-            setImageSrc(dataUrl);
-            setIsCropping(false);
-            
-        }, 'image/jpeg');
-        
-    }, [completedCrop]);
+            actualCrop.width,
+            actualCrop.height
+        )
 
+        return new Promise<Blob>((resolve, reject) => {
+            canvas.toBlob(blob => {
+                if (blob) resolve(blob)
+                else reject(new Error('Canvas is empty'))
+            }, 'image/jpeg')
+        })
+    }
 
+    const handleImageCrop = useCallback(async () => {
+        if (!pixelCrop || !imageRef.current) return
+
+        try {
+            const blob = await getCroppedBlob(imageRef.current, pixelCrop)
+            const file = new File([blob], 'cropped.jpg', { type: 'image/jpeg' })
+
+            // Revoca URL previa si era blob
+            if (imageSrc.startsWith('blob:')) {
+                URL.revokeObjectURL(imageSrc)
+            }
+
+            const objectUrl = URL.createObjectURL(blob)
+            // setCroppedFile(file)
+            setImageSrc(objectUrl)
+            setValue('imagen', file)
+        } catch (error) {
+            console.error('Crop failed:', error)
+        } finally {
+            setIsCroppingMode(false)
+        }
+    }, [pixelCrop, imageSrc, setValue])
 
     return (
         <section className="image-submit">
-            {!isCropping ? (<>
-                <h3 className='image-submit__title'>Imagen seleccionada</h3>
-                <div className='image-preview-container'>
-                    <img className='image-preview' src={imageSrc} width={200} alt="preview" />
-                </div>
-                <input type="file" accept="image/*" onChange={handleImageChange} />
-                {imageSrc !== initialImageSrc && (
-                    <button onClick={() => setIsCropping(true)} className="btn btn-primary">
-                        Recortar imagen
+            {!isCroppingMode ? (
+                <>
+                    <h3 className="image-submit__title">Imagen seleccionada</h3>
+                    <div className="image-preview-container">
+                        <img className="image-preview" src={imageSrc} width={200} alt="preview" />
+                    </div>
+                    <div className='image-content-submit__input'>
+                        <label className='image-input-label' htmlFor="image">Seleccionar Imagen</label>
+                        <input className='image-input-file' type="file" id="image" accept="image/*" onChange={handleImageChange} />
+                    </div>
+                    {imageSrc !== initialImageSrc && (
+                        <button onClick={() => setIsCroppingMode(true)} className="btn btn-primary">
+                            Recortar imagen
+                        </button>
+                    )}
+                </>
+            ) : (
+                <>
+                    <h3 className="image-submit__title">Recorte de imagen</h3>
+                    <ReactCrop
+                        crop={percentCrop}
+                        onChange={(_, newPercentCrop) => setPercentCrop(newPercentCrop)}
+                        onComplete={newPixelCrop => setPixelCrop(newPixelCrop)}
+                        keepSelection
+                    >
+                        <img
+                            ref={imageRef}
+                            src={imageSrc}
+                            alt="to be cropped"
+                            style={{ maxWidth: '100%', maxHeight: '60vh' }}
+                        />
+                    </ReactCrop>
+                    <button onClick={handleImageCrop} className="btn btn-success">
+                        Guardar recorte
                     </button>
-                )}
-
-            </>) : (<>
-                <h3 className='image-submit__title'>Recorte de imagen</h3>
-                <ReactCrop
-                    crop={crop}
-                    onChange={(_, percentCrop) => setCrop(percentCrop)}
-                    onComplete={pixelCrop => setCompletedCrop(pixelCrop)}
-                    keepSelection
-                >
-                    <img ref={imgRef} src={imageSrc} alt="to be cropped" style={{ maxWidth: '100%', maxHeight: '60vh' }} />
-                </ReactCrop>
-
-                <button onClick={handleImageCrop} className="btn btn-success">
-                    Guardar recorte
-                </button>
-                <button onClick={() => setIsCropping(false)} className="btn btn-danger">
-                    Cancelar recorte
-                </button>
-            </>)}
+                    <button onClick={() => setIsCroppingMode(false)} className="btn btn-danger">
+                        Cancelar recorte
+                    </button>
+                </>
+            )}
         </section>
-    );
+    )
 }

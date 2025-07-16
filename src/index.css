@@ -306,7 +306,7 @@ body {
   border: .3rem solid var(--sage);
   padding: 1rem;
   background-color: var(--pale-sand);
-  color: var(--white);
+  color: #000;
   margin-bottom: 1rem;
 }
 
@@ -349,6 +349,12 @@ body {
   cursor: not-allowed;
 }
 
+
+.ceramic-chat__messages {
+  overflow: auto;
+  max-height: 55rem;
+}
+
 @media (min-width: 724px) {
   .ceramic__button {
     width: 50%;
@@ -380,26 +386,26 @@ body {
 }
 
 @media (min-width: 464px) {
-  .container-others{
+  .container-others {
     flex-direction: row;
-    
-  }    
+
+  }
 }
 
 @media (min-width: 764px) {
-  .container-others{
+  .container-others {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
-    
+
 }
 
 @media (min-width: 1024px) {
-  .container-others{
+  .container-others {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
   }
-    
+
 }
 
 
@@ -442,6 +448,36 @@ body {
   mask-image: linear-gradient(black 90%, transparent);
 }
 
+.image-content-submit__input {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.image-input-label {
+  display: block;
+  width: 70%;
+  background-color: var(--accent-green);
+  color: var(--white);
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color .3s ease;
+}
+
+.image-input-label:hover {
+  background-color: var(--green-400);
+  transition: background-color .3s ease;
+}
+
+.image-input-file {
+  display: none;
+}
+
 
 /*? markdown */
 .markdown {
@@ -480,21 +516,21 @@ body {
   color: var(--white);
   width: 80%;
   margin: 1rem auto;
-  padding: 1rem 2rem; 
+  padding: 1rem 2rem;
   text-align: center;
 }
 
-.ceramic-container-other__image{
-  width: 100%;  
+.ceramic-container-other__image {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.ceramic-other__image{
+.ceramic-other__image {
   width: 80%;
   height: auto;
-  max-width: 100%;  
+  max-width: 100%;
   object-fit: contain;
   padding-bottom: 1rem;
 }

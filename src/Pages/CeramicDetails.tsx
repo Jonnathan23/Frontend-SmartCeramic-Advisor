@@ -37,7 +37,7 @@ export default function CeramicDetails() {
             if (!data) return;
 
             setCeramic(data);
-            const newMessage = [...textChat, data.respuesta];
+            const newMessage = [data.respuesta, ...textChat];
             setTextChat(newMessage);
 
             localStorage.removeItem('ceramic');
@@ -58,6 +58,7 @@ export default function CeramicDetails() {
             data.thread_id = ceramic.thread_id
         }
         mutate({ formData: data });
+        //console.log(data);
     }
 
 
@@ -85,15 +86,18 @@ export default function CeramicDetails() {
                     <div className="ceramic-chat__button">
                         <button className="ceramic__button" type="submit">{isPending ? "Enviando..." : "Enviar"}</button>
                     </div>
-                    {textChat.map((message, index) =>
-                        <MarkdownRenderer key={index} content={message} />
-                    )}
+                    <div className="ceramic-chat__messages">
+                        {textChat.map((message, index) => (<>
+                            <MarkdownRenderer key={index} content={message} principal={ceramic?.Principal} isFirts={index === 0} />
+                        </>
+                        ))}
+                    </div>
                 </div>
             </form>
             {isThereOthersCeramics(ceramic) && (<>
                 <h3 className="ceramic-assistant__title--others">Otras Ceramicas</h3>
                 <div className="container-others">
-                    {ceramic!.Otras.map((ceramic, index) => (
+                    {ceramic?.Otras && ceramic.Otras.map((ceramic, index) => (
                         <OtherCeramic key={index} ceramic={ceramic} />
                     ))}
                 </div>
