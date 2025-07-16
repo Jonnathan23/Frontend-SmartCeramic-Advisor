@@ -2,7 +2,6 @@
   /* Primery colors */
   --purple-600: #5847eb;
   --orange-300: #ff8c66;
-  --blue-300: #56c2e6;
   --pink-400: #ff5c7c;
   --pastel-red: #e03635;
   --green-400: #4ee98f;
@@ -55,6 +54,28 @@
   --accent-rust: #B4654A;
 
 
+  /* version2 */
+  /* Neutrals */
+  --industrial-background: #ececec;
+  --industrial-surface: #b3b3b3;
+  --industrial-text: #2e2e2e;
+
+  /* Accents */
+  --blue-300: #56c2e6;
+  --blue-900: #166ce5;
+  --industrial-steel: #7f8c8d;
+  /* brushed steel */
+
+  /* version3 */
+  /* Neutrals */
+  --scandi-background: #faf9f6;
+  --scandi-surface: #e2d6c5;
+  --scandi-text: #4a4a4a;
+
+  /* Accents */
+  --scandi-oak: #c8a17a;
+  --scandi-moss: #a3b18a;
+
 }
 
 html {
@@ -92,13 +113,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--orange-300);
+  background-color: var(--blue-300);
   color: var(--navy-200);
   padding: 1rem 2rem;
 
-  box-shadow: -1px 7px 10px 2px rgba(194, 98, 79, 0.54);
-  -webkit-box-shadow: -1px 7px 10px 2px rgba(226, 114, 91, 0.54);
-  -moz-box-shadow: -1px 7px 10px 2px rgba(226, 114, 91, 0.54);
+  box-shadow: 10px 10px 16px -2px rgba(75, 103, 124, 0.33);
+  -webkit-box-shadow: 10px 10px 16px -2px rgba(75, 108, 124, 0.33);
+  -moz-box-shadow: 10px 10px 16px -2px rgba(75, 105, 124, 0.33);
   margin-bottom: 2rem;
 }
 
@@ -186,8 +207,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--clay-brown);
-  color: var(--Navy-200);
+  background-color: var(--blue-900);
+  color: var(--white);
 }
 
 /** |-----|| Pages  ||-----|*/
@@ -197,7 +218,7 @@ body {
 /* Chat & Assistant */
 .ceramic-chat,
 .ceramic-assistant {
-  background-color: var(--sand);
+  background-color: var(--industrial-background);
   padding: 2rem;
   border-radius: .5rem;
   color: var(--text-primary);
@@ -205,13 +226,13 @@ body {
   margin-left: auto;
   margin-right: auto;
 
-  box-shadow: 10px 10px 16px -2px rgba(124, 94, 75, 0.33);
-  -webkit-box-shadow: 10px 10px 16px -2px rgba(124, 94, 75, 0.33);
-  -moz-box-shadow: 10px 10px 16px -2px rgba(124, 94, 75, 0.33);
+  box-shadow: 10px 10px 16px -2px rgba(75, 103, 124, 0.33);
+  -webkit-box-shadow: 10px 10px 16px -2px rgba(75, 108, 124, 0.33);
+  -moz-box-shadow: 10px 10px 16px -2px rgba(75, 105, 124, 0.33);
 }
 
 .ceramic-assistant__title {
-  background-color: var(--orange-300);
+  background-color: var(--blue-300);
   color: var(--white);
   font-size: 2.3rem;
   font-weight: 700;
@@ -255,7 +276,7 @@ body {
 }
 
 .ceramic-details__content {
-  background-color: var(--orange-300);
+  background-color: var(--blue-300);
   border-radius: 2rem;
   box-shadow: 10px 10px 16px -2px rgba(124, 94, 75, 0.33);
   -webkit-box-shadow: 10px 10px 16px -2px rgba(124, 94, 75, 0.33);
@@ -270,7 +291,7 @@ body {
   justify-content: center;
   padding: 4rem;
   border-radius: 2rem;
-  background-color: var(--sand);
+  background-color: var(--industrial-steel);
 }
 
 .ceramic-details__image {
@@ -289,7 +310,7 @@ body {
 .ceramic-details__title {
   padding: 2rem;
   width: 100%;
-  color: var(--terracotta);
+  color: var(--blue-300);
   text-align: center;
 }
 
@@ -300,13 +321,21 @@ body {
   gap: 1rem;
 }
 
+.ceramic-chat__input__container {
+  width: 100%;
+  min-height: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
 .ceramic-chat__input__field {
   width: 100%;
+  height: 100%;
   border-radius: 1.2rem;
-  border: .3rem solid var(--sage);
+  border: .3rem solid var(--blue-300);
   padding: 1rem;
-  background-color: var(--pale-sand);
-  color: #000;
+  background-color: var(--background-base);
+  color: var(--navy-900);
   margin-bottom: 1rem;
 }
 
@@ -321,13 +350,16 @@ body {
 
 .ceramic-chat__button {
   width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center
 }
 
 .ceramic__button {
-  width: 80%;
+  width: auto;
+  height: 100%;
+  display: flex;
   padding: 1rem;
   border-radius: 1.2rem;
   background-color: var(--accent-green);
@@ -355,19 +387,13 @@ body {
   max-height: 55rem;
 }
 
-@media (min-width: 724px) {
-  .ceramic__button {
-    width: 50%;
-    max-width: 21rem;
-  }
-
-}
+@media (min-width: 724px) {}
 
 /* container-others */
 .ceramic-assistant__title--others {
   width: 100%;
 
-  background-color: var(--terracotta);
+  background-color: var(--blue-300);
   color: var(--white);
   font-size: 2.3rem;
   font-weight: 700;
@@ -412,7 +438,7 @@ body {
 /** |-----|| Components  ||-----|*/
 /*? ImageSubmit */
 .image-submit {
-  background-color: var(--pale-sand);
+  background-color: var(--background-base);
   margin-top: 2rem;
   padding: 2rem;
   border-radius: .8rem;
@@ -422,7 +448,7 @@ body {
   margin-bottom: 1rem;
   font-size: 1.8rem;
   text-align: center;
-  background-color: var(--orange-300);
+  background-color: var(--blue-300);
   color: var(--white);
   padding: 1rem 2rem;
   border-radius: 2rem;
@@ -459,7 +485,7 @@ body {
 
 .image-input-label {
   display: block;
-  width: 70%;
+  width: auto;
   background-color: var(--accent-green);
   color: var(--white);
   padding: 1rem 2rem;
@@ -481,7 +507,7 @@ body {
 
 /*? markdown */
 .markdown {
-  background-color: var(--pale-sand);
+  background-color: var(--background-base);
   margin-top: 2rem;
   padding: 2rem 3rem;
   border-radius: .8rem;

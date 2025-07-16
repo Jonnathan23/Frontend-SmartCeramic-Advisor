@@ -1,16 +1,17 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import ReactCrop from 'react-image-crop'
 import type { PixelCrop, PercentCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import type { UseFormSetValue } from 'react-hook-form'
+import type { UseFormReset, UseFormSetValue } from 'react-hook-form'
 import type { CeramicForm } from '../../types'
 
 
 type ImageSubmitProps = {
     setValue: UseFormSetValue<CeramicForm>
+    reset: UseFormReset<CeramicForm>
 }
 
-export default function ImageSubmit({ setValue }: ImageSubmitProps) {
+export default function ImageSubmit({ setValue, reset }: ImageSubmitProps) {
     const initialImageSrc = 'selectImage.jpg'
     const [imageSrc, setImageSrc] = useState<string>(initialImageSrc)
     //const [croppedFile, setCroppedFile] = useState<File | null>(null)
@@ -18,6 +19,12 @@ export default function ImageSubmit({ setValue }: ImageSubmitProps) {
     const [percentCrop, setPercentCrop] = useState<PercentCrop>({ unit: '%', x: 0, y: 0, width: 100, height: 100 })
     const [pixelCrop, setPixelCrop] = useState<PixelCrop | null>(null)
     const imageRef = useRef<HTMLImageElement | null>(null)
+
+    useEffect(() => {
+        console.log('reset')
+        setImageSrc(initialImageSrc)
+    }, [reset])
+
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]
@@ -106,7 +113,27 @@ export default function ImageSubmit({ setValue }: ImageSubmitProps) {
                         <img className="image-preview" src={imageSrc} width={200} alt="preview" />
                     </div>
                     <div className='image-content-submit__input'>
-                        <label className='image-input-label' htmlFor="image">Seleccionar Imagen</label>
+                        <label className='image-input-label' htmlFor="image">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="32"
+                                height="32"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#ffffffff"
+                                strokeWidth="1"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >   
+                                <path d="M15 8h.01" />
+                                <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />
+                                <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3.5 3.5" />
+                                <path d="M14 14l1 -1c.679 -.653 1.473 -.829 2.214 -.526" />
+                                <path d="M19 22v-6" />
+                                <path d="M22 19l-3 -3l-3 3" />
+                            </svg>
+
+                        </label>
                         <input className='image-input-file' type="file" id="image" accept="image/*" onChange={handleImageChange} />
                     </div>
                     {imageSrc !== initialImageSrc && (

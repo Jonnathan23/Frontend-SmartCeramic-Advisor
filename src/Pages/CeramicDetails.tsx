@@ -72,25 +72,40 @@ export default function CeramicDetails() {
                         Este asistente te ayudara a encontrar la ceramica perfecta para tu hogar.
                         Puedes subir una imagen de la ceramica que te gusta y nosotros te ayudaremos a encontrarla.
                     </p>
-                    <ImageSubmit setValue={setValue} />
+                    <ImageSubmit setValue={setValue} reset={reset} />
                 </div>
 
                 <div className="ceramic-chat">
                     <h3 className="ceramic-assistant__title">Chat</h3>
                     <div className="ceramic-chat__input">
                         <label htmlFor="mensaje">Preguntanos</label>
-                        <input className="ceramic-chat__input__field" type="text" placeholder="Ej. ¿Que formatos hay?"
-                            {...register("mensaje")}
-                        />
-                    </div>
-                    <div className="ceramic-chat__button">
-                        <button className="ceramic__button" type="submit">{isPending ? "Enviando..." : "Enviar"}</button>
-                    </div>
+                        <div className="ceramic-chat__input__container">
+                            <input className="ceramic-chat__input__field" type="text" placeholder="Ej. ¿Que formatos hay?"
+                                {...register("mensaje")}
+                            />
+                            <button className="ceramic__button" type="submit">{isPending ? "Enviando..." :
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="22"
+                                    height="22"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#ffffffff"
+                                    strokeWidth="1"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M4.698 4.034l16.302 7.966l-16.302 7.966a.503 .503 0 0 1 -.546 -.124a.555 .555 0 0 1 -.12 -.568l2.468 -7.274l-2.468 -7.274a.555 .555 0 0 1 .12 -.568a.503 .503 0 0 1 .546 -.124z" />
+                                    <path d="M6.5 12h14.5" />
+                                </svg>
+
+                            }</button>
+                        </div>
+                    </div>                    
                     <div className="ceramic-chat__messages">
-                        {textChat.map((message, index) => (<>
+                        {textChat.map((message, index) =>
                             <MarkdownRenderer key={index} content={message} principal={ceramic?.Principal} isFirts={index === 0} />
-                        </>
-                        ))}
+                        )}
                     </div>
                 </div>
             </form>
