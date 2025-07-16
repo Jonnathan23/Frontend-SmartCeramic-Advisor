@@ -349,12 +349,34 @@ body {
   cursor: not-allowed;
 }
 
-@media (min-width: 724px) {  
+@media (min-width: 724px) {
   .ceramic__button {
     width: 50%;
     max-width: 21rem;
   }
 
+}
+
+/* container-others */
+.ceramic-assistant__title--others {
+  width: 100%;
+
+  background-color: var(--terracotta);
+  color: var(--white);
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin-top: 4rem;
+  padding: 1rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.container-others {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }
 
 /** |-----|| Components  ||-----|*/
@@ -417,6 +439,25 @@ body {
   font-weight: 300;
   color: var(--text-secondary);
 
+}
+
+/*? Other Ceramics */
+.ceramic-container-other {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--pale-sand);
+}
+
+.ceramic-container-other__title {
+  background-color: var(--accent-green);
+  color: var(--white);
+  width: 80%;
+  margin: 1rem auto;
+  padding: 1rem 2rem; 
+  text-align: center;
 }
 
 /** |-----|| Individual Elements ||-----|*/

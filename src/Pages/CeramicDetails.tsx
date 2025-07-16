@@ -91,9 +91,12 @@ export default function CeramicDetails() {
                 </div>
             </form>
             {isThereOthersCeramics(ceramic) && (<>
-                {ceramic!.Otras.map((ceramic, index) => (
-                    <OtherCeramic key={index} ceramic={ceramic} />
-                ))}
+                <h3 className="ceramic-assistant__title--others">Otras Ceramicas</h3>
+                <div className="container-others">
+                    {ceramic!.Otras.map((ceramic, index) => (
+                        <OtherCeramic key={index} ceramic={ceramic} />
+                    ))}
+                </div>
             </>)}
         </>
     );
