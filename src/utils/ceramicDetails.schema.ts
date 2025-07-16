@@ -1,28 +1,8 @@
-import { array, object, string } from 'zod';
-
-export const productsSchema = object({
-    COD_PRODUCTO_NK2: string(),
-    LINEA_NEGOCIO: string(),
-    ESTADO_INVENTARIO: string(),
-    CALIDAD: string(),
-    MARCA: string(),
-    FORMATO: string(),
-    APLICACION: string(),
-    COLOR: string(),
-    COLECCION: string(),
-    SUBMARCA: string()
-});
+import { array, object, string, z } from 'zod';
 
 export const ceramicDetailsSchema = object({
-    resumen: string(),
-    productos: array(productsSchema)
-});
-
-
-
-//* Chat
-
-export const ceramicChatSchema = object({
     respuesta: string(),
     thread_id: string(),
-})
+    Principal: string().or(z.null()),
+    Otras: array(string()),
+});
