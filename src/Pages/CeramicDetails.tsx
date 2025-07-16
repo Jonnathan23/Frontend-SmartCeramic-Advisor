@@ -75,14 +75,15 @@ export default function CeramicDetails() {
                 </div>
 
                 <div className="ceramic-chat">
-                    <h3>Chat</h3>
-                    <div>
-                        <input type="text" placeholder="Escribe tu pregunta"
+                    <h3 className="ceramic-assistant__title">Chat</h3>
+                    <div className="ceramic-chat__input">
+                        <label htmlFor="mensaje">Preguntanos</label>
+                        <input className="ceramic-chat__input__field" type="text" placeholder="Ej. ¿Que formatos hay?"
                             {...register("mensaje")}
                         />
                     </div>
-                    <div>
-                        <button type="submit">{isPending ? "Enviando..." : "Enviar"}</button>
+                    <div className="ceramic-chat__button">
+                        <button className="ceramic__button" type="submit">{isPending ? "Enviando..." : "Enviar"}</button>
                     </div>
                     {textChat.map((message, index) =>
                         <MarkdownRenderer key={index} content={message} />
