@@ -1,82 +1,99 @@
 import { useEffect, useState } from "react";
 import ImageSubmit from "../Components/CeramicDetails/ImageSubmit";
-import type { CeramicDetails } from "../types";
-import ProductsDetails from "../Components/CeramicDetails/ProductsDetails";
-import TextSubmit from "../Components/CeramicDetails/TextSubmit";
+import type { CeramicDetails, CeramicForm } from "../types";
 import MarkdownRenderer from "../Components/MarkdownRenderer";
+import { useMutation } from "@tanstack/react-query";
+import { submitCeramicDetails } from "../services/CeramicDetails.api";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { isThereOthersCeramics } from "../utils/policies";
+import OtherCeramic from "../Components/CeramicDetails/OtherCeramic";
 
 export default function CeramicDetails() {
     const [ceramic, setCeramic] = useState<CeramicDetails | null>(null);
     const [textChat, setTextChat] = useState<string[]>([]);
-    const [threadId, setThreadId] = useState<string>('');
+
 
     useEffect(() => {
-        const storedThreadId = localStorage.getItem('ceramicThreadId');
-        const storedCeramic = localStorage.getItem('ceramicDetails');
-        const ceramicData = storedCeramic ? JSON.parse(storedCeramic) : null;
-        const isThereTextChat = localStorage.getItem('ceramicTextChat');
-        const storedTextChat = isThereTextChat ? JSON.parse(isThereTextChat) : [] as string[];
-
-        if (ceramicData) {
-            setCeramic(ceramicData);
+        const ceramicStorage = localStorage.getItem('ceramic');
+        const textChatStorage = localStorage.getItem('textChat');
+        if (ceramicStorage) {
+            setCeramic(JSON.parse(ceramicStorage));
         }
 
-        if (storedTextChat.length) {
-            setTextChat(storedTextChat);
+        if (textChatStorage) {
+            setTextChat(JSON.parse(textChatStorage));
         }
 
-        if (storedThreadId) {
-            setThreadId(storedThreadId);
-        }
     }, [])
+
+    const { register, reset, handleSubmit, setValue } = useForm<CeramicForm>();
+
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: submitCeramicDetails,
+        onSuccess: (data) => {
+            toast.success("Descripcion enviada correctamente");
+            if (!data) return;
+
+            setCeramic(data);
+            const newMessage = [...textChat, data.respuesta];
+            setTextChat(newMessage);
+
+            localStorage.removeItem('ceramic');
+            localStorage.removeItem('textChat');
+
+            localStorage.setItem('ceramic', JSON.stringify(data));
+            localStorage.setItem('textChat', JSON.stringify(newMessage));
+
+            reset();
+        },
+        onError: () => {
+            toast.error("Error al enviar la descripcion");
+        }
+    })
+
+    const handleSubmitCeramicDetails = (data: CeramicForm) => {
+        if (ceramic && ceramic.thread_id) {
+            data.thread_id = ceramic.thread_id
+        }
+        mutate({ formData: data });
+    }
+
 
     return (
         <>
-            <div className="ceramic-container">
-                <article className="ceramic-assistant">
+            <form className="ceramic-container" onSubmit={handleSubmit(handleSubmitCeramicDetails)}>
+                <div className="ceramic-assistant">
                     <h2 className="ceramic-assistant__title">Asistente de Ceramicas</h2>
                     <p>Encontrar la ceramica perfecta</p>
                     <p>
                         Este asistente te ayudara a encontrar la ceramica perfecta para tu hogar.
                         Puedes subir una imagen de la ceramica que te gusta y nosotros te ayudaremos a encontrarla.
                     </p>
-                    <ImageSubmit setCeramic={setCeramic} />
-                </article>
+                    <ImageSubmit setValue={setValue} />
+                </div>
 
-                <section className="ceramic-chat">
+                <div className="ceramic-chat">
                     <h3>Chat</h3>
-                    <TextSubmit setTextChat={setTextChat} setThreadId={setThreadId} threadId={threadId} />
+                    <div>
+                        <input type="text" placeholder="Escribe tu pregunta"
+                            {...register("mensaje")}
+                        />
+                    </div>
+                    <div>
+                        <button type="submit">{isPending ? "Enviando..." : "Enviar"}</button>
+                    </div>
                     {textChat.map((message, index) =>
                         <MarkdownRenderer key={index} content={message} />
                     )}
-                </section>
-            </div>
-
-            <main>
-                {ceramic ? (
-                    <section className="ceramic-details">
-                        <h3 className="ceramic-details__title">Detalles de la Cerámica</h3>
-                        <div >
-                            <p>Resumen: </p>
-                            <MarkdownRenderer content={ceramic.resumen} />
-
-                        </div>
-                        <p>Productos:</p>
-                        <ul>
-                            {
-                                ceramic.productos.map((product, index) => (
-                                    <li key={index}>
-                                        <ProductsDetails product={product} />
-                                    </li>
-                                ))
-
-                            }
-                        </ul>
-                    </section>
-                ) : (<>
-                    <p className="default-text">Sube una imagen de la ceramica que te gusta, o escribe los detalles para una recomendacion</p>
-                </>)}
-            </main>
+                </div>
+            </form>
+            {isThereOthersCeramics(ceramic) && (<>
+                {ceramic!.Otras.map((ceramic, index) => (
+                    <OtherCeramic key={index} ceramic={ceramic} />
+                ))}
+            </>)}
         </>
     );
 }

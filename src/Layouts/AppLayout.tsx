@@ -13,7 +13,7 @@ export default function AppLayout() {
                         </Link>
                     </div>
                     <nav className="app-nav">
-                        <NavLink to="/" className={({ isActive }) => (isActive ? "active" : "header__nav-element")}> Recomendaciones </NavLink>
+                        <NavLink to="/" className={({ isActive }) => (isActive ? "active" : "header__nav-element")}> Buscador de Ceramicas </NavLink>
                         <NavLink to="/home" className={({ isActive }) => (isActive ? "active" : "header__nav-element")}> Historial </NavLink>
                         <NavLink to="/home" className={({ isActive }) => (isActive ? "active" : "header__nav-element header__nav-element--logout")}> Cerrar Sesión </NavLink>
                     </nav>

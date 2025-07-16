@@ -1,19 +1,17 @@
-import React, { useState, useRef, useCallback, type Dispatch } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import ReactCrop from 'react-image-crop'
 import type { PixelCrop, PercentCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import { useMutation } from '@tanstack/react-query'
+import type { UseFormSetValue } from 'react-hook-form'
+import type { CeramicForm } from '../../types'
 
-import { toast } from 'react-toastify'
-import type { CeramicDetails } from '../../types'
-import { submitImage } from '../../services/CeramicDetails.api'
 
 
 type ImageSubmitProps = {
-    setCeramic: Dispatch<React.SetStateAction<CeramicDetails | null>>
+    setValue: UseFormSetValue<CeramicForm>
 }
 
-export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
+export default function ImageSubmit({ setValue }: ImageSubmitProps) {
     const initialImageSrc = 'selectImage.jpg'
     const [imageSrc, setImageSrc] = useState<string>(initialImageSrc);
     const [croppedFile, setCroppedFile] = useState<File | null>(null);
@@ -22,18 +20,7 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
     const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
     const imgRef = useRef<HTMLImageElement | null>(null);
 
-    const { mutate: submitMutation, isPending, isError } = useMutation({
-        mutationFn: submitImage,
-        onSuccess: (data) => {
-            setCeramic(data as CeramicDetails)
-            localStorage.setItem('ceramicDetails', JSON.stringify(data));
-            toast.success('Imagen enviada correctamente');
-        },
-        onError: (error) => {
-            toast.error(error.message || 'Fallo al enviar la imagen');
-            setCeramic(null);
-        }
-    });
+
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -48,7 +35,8 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
             setCompletedCrop(null);
             setIsCropping(false);
             // Guardar el archivo original para enviar si no recortan
-            setCroppedFile(file);
+            setCroppedFile(file);            
+            setValue('imagen', file);
         };
 
         reader.readAsDataURL(file);
@@ -85,23 +73,17 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
             // crear File desde Blob
             const file = new File([blob], 'cropped.jpg', { type: 'image/jpeg' });
             setCroppedFile(file);
+            
             // actualizar preview
             const dataUrl = URL.createObjectURL(blob);
             setImageSrc(dataUrl);
             setIsCropping(false);
+            
         }, 'image/jpeg');
+        
     }, [completedCrop]);
 
-    const handleSubmitImage = () => {
-        if (!croppedFile) {
-            console.warn('No hay imagen recortada para enviar');
-            return;
-        }
-        submitMutation({ ceramicImageForm: { imagen: croppedFile } });
-        console.log('Imagen enviada:', croppedFile);
-    };
 
-    if (isError) return <p className='default-text'>Error al subir la imagen.</p>;
 
     return (
         <section className="image-submit">
@@ -116,12 +98,6 @@ export default function ImageSubmit({ setCeramic }: ImageSubmitProps) {
                         Recortar imagen
                     </button>
                 )}
-                {croppedFile && (
-                    <button onClick={handleSubmitImage} className="btn btn-success" disabled={isPending}>
-                        {isPending ? 'Enviando...' : 'Enviar imagen al backend'}
-                    </button>
-                )}
-                {isError && <p className="text-danger">Error al subir la imagen.</p>}
 
             </>) : (<>
                 <h3 className='image-submit__title'>Recorte de imagen</h3>
