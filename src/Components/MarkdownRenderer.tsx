@@ -5,10 +5,10 @@ import remarkGfm from 'remark-gfm'
 interface MarkdownRendererProps {
   content: string
   principal: string | undefined | null
-  isFirts: boolean
+  isLast: boolean
 }
 
-export default function MarkdownRenderer({ content, principal, isFirts }: MarkdownRendererProps) {
+export default function MarkdownRenderer({ content, principal, isLast }: MarkdownRendererProps) {
 
   return (
     <div className='markdown'>
@@ -17,7 +17,7 @@ export default function MarkdownRenderer({ content, principal, isFirts }: Markdo
         <p className='markdown__title__text'>SmartCeramic Advisor:</p>
       </div>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-      {isFirts && principal &&
+      {isLast && principal &&
         <section>
           <div>
             <img width={100} src="selectImage.jpg" alt="" />
