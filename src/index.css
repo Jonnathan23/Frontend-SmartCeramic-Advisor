@@ -489,6 +489,11 @@ body {
   transition: background-color .3s ease;
 }
 
+.aside__button:hover {
+  background-color: rgb(86, 186, 220);
+  transition: background-color .3s ease;
+}
+
 .aside__button--close {
   display: flex;
   align-items: center;
