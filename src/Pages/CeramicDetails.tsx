@@ -8,6 +8,7 @@ import CeramicChat from "../Components/CeramicDetails/CeramicChat";
 export default function CeramicDetails() {
     const [ceramic, setCeramic] = useState<CeramicDetails | null>(null);
     const [textChat, setTextChat] = useState<string[]>([]);
+    const [imageSrc, setImageSrc] = useState<string>('');
 
     useEffect(() => {
         const ceramicStorage = localStorage.getItem('ceramic');
@@ -28,9 +29,9 @@ export default function CeramicDetails() {
     return (
         <>
             <div className="container-main">
-                <AsideMenu />
+                <AsideMenu setImageSrc={setImageSrc} setTextChat={setTextChat} setCeramic={setCeramic} />
                 <main>
-                    <CeramicChat ceramic={ceramic} setCeramic={setCeramic} textChat={textChat} setTextChat={setTextChat} />
+                    <CeramicChat ceramic={ceramic} setCeramic={setCeramic} textChat={textChat} setTextChat={setTextChat} imageSrc={imageSrc} setImageSrc={setImageSrc} />
                 </main>
             </div>
             {isThereOthersCeramics(ceramic) && (<>

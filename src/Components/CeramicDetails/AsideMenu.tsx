@@ -1,7 +1,18 @@
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
+import type { CeramicDetails } from "../../types";
+import { useNewMessage } from "../../hooks/useCeramicChat.use";
 
-export default function AsideMenu() {
+type AsideMenuProps = {
+    setImageSrc: Dispatch<SetStateAction<string>>
+    setTextChat: React.Dispatch<React.SetStateAction<string[]>>
+    setCeramic: React.Dispatch<React.SetStateAction<CeramicDetails | null>>
+}
+
+
+export default function AsideMenu({ setImageSrc, setTextChat, setCeramic }: AsideMenuProps) {
     const [showMenuDetails, setShowMenuDetails] = useState(false);
+
+    const { newConversation } = useNewMessage({ setImageSrc, setTextChat, setCeramic })
 
     const handleShowMenuDetails = () => setShowMenuDetails(!showMenuDetails);
     return (
@@ -27,7 +38,7 @@ export default function AsideMenu() {
                     </svg>
                     <p>Ocultar</p>
                 </button>
-                <button className="aside__button">
+                <button className="aside__button" onClick={newConversation}>
                     <svg className="aside__button__icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f9f9f3" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
                         <path d="M21 21l-6 -6" />

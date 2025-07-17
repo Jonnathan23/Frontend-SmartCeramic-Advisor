@@ -3,8 +3,6 @@ import type { CeramicDetails, CeramicForm } from "../../types";
 import type { Dispatch, SetStateAction } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
 
-import { useState } from 'react'
-
 import 'react-image-crop/dist/ReactCrop.css'
 import { useSubmitCeramicDetails } from "../../hooks/useCeramicDetails.use";
 import { useCeramicChat } from "../../hooks/useCeramicChat.use";
@@ -16,10 +14,11 @@ type CeramicChatProps = {
     setCeramic: Dispatch<SetStateAction<CeramicDetails | null>>
     textChat: string[]
     setTextChat: Dispatch<SetStateAction<string[]>>
+    imageSrc: string
+    setImageSrc: Dispatch<SetStateAction<string>>
 }
 
-export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat }: CeramicChatProps) {
-    const [imageSrc, setImageSrc] = useState<string>('')
+export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat, imageSrc, setImageSrc }: CeramicChatProps) {
 
     //* Form
     const { register, reset, handleSubmit, setValue } = useForm<CeramicForm>();
