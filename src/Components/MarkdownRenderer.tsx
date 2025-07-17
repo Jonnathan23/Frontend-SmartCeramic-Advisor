@@ -13,7 +13,7 @@ export default function MarkdownRenderer({ content, principal, isFirts }: Markdo
   return (
     <div className='markdown'>
       <div className='markdown__title'>
-        <img src="icon.png" width={20} alt="icon_SmartCeramic_Advisor" />
+        <img src="icon_v2.png" width={20} alt="icon_SmartCeramic_Advisor" />
         <p className='markdown__title__text'>SmartCeramic Advisor:</p>
       </div>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
