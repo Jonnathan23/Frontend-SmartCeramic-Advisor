@@ -37,13 +37,3 @@ El proyecto está estructurado de la siguiente manera:
 * `public`: Carpeta que contiene los archivos estáticos de la aplicación.
 * `index.html`: Archivo que contiene el código HTML de la aplicación.
 * `vite.config.ts`: Archivo de configuración de Vite.
-
-## Contribuciones
-
-Si deseas contribuir al proyecto, por favor, sigue los siguientes pasos:
-
-1. Crea un fork del repositorio.
-2. Realiza los cambios que desees.
-3. Crea un pull request.
-
-Gracias por considerar contribuir al proyecto.
