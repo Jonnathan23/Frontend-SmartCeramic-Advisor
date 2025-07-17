@@ -8,13 +8,14 @@ export default function AppLayout() {
             <div className="app-layout">
                 <header className="app-header">
                     <div className="app__header__container-logo">
-                        <Link to="/" >
+                        <Link to="/" className="app__header__logo-link" >
+                            <div className="app__header__logo-half-diamond"></div>
                             <img className="app__header__logo" src="logo_v5.png" alt="" />
                         </Link>
                     </div>
                     <nav className="app-nav">
                         <NavLink to="/" className={({ isActive }) => (isActive ? "active" : "header__nav-element")}> Buscador de Ceramicas </NavLink>
-                        <NavLink to="/home" className={({ isActive }) => (isActive ? "active" : "header__nav-element")}> Historial </NavLink>
+                        <NavLink to="/home" className={({ isActive }) => (isActive ? "active" : "header__nav-element")}> Cuenta </NavLink>
                         <NavLink to="/home" className={({ isActive }) => (isActive ? "active" : "header__nav-element header__nav-element--logout")}> Cerrar Sesión </NavLink>
                     </nav>
                 </header>
