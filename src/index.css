@@ -466,7 +466,10 @@ body {
 
 /*? Aside menu */
 .hide-aside {
-  display: none;
+  opacity: 0;
+  transform: translateX(100%);
+  pointer-events: none;
+  height: 0;  
 }
 
 .aside {
@@ -519,6 +522,14 @@ body {
   padding-right: 1rem;
   width: 4.5rem;
 
+}
+
+.aside,
+.aside-details {  
+  display: flex;  
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /** |-----|| Individual Elements ||-----|*/
