@@ -1,69 +1,49 @@
-# React + TypeScript + Vite
+# SmartCeramic Advisor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción del proyecto
 
-Currently, two official plugins are available:
+SmartCeramic Advisor es un proyecto que busca proporcionar asesoramiento y recomendaciones personalizadas para la selección de cerámicos. El proyecto utiliza tecnologías como React, React Query y Zod para crear una aplicación web interactiva y fácil de usar.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Instalación y arranque del servidor
 
-## Expanding the ESLint configuration
+Para arrancar el servidor, sigue los siguientes pasos:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Clona el repositorio: `git clone https://github.com/Jonnathan23/Frontend-SmartCeramic-Advisor.git`
+2. Instala las dependencias: `npm install` o `yarn install`
+3. Arranca el servidor: `npm run dev` o `yarn dev`
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+El servidor se iniciará en el puerto 3000. Puedes acceder a la aplicación web en `http://localhost:3000`.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Dependencias y tecnologías utilizadas
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* React
+* React Query
+* Zod
+* Axios
+* React Router Dom
+* React Toastify
+* Material Symbols Outlined
+* Google Fonts
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Estructura del proyecto
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+El proyecto está estructurado de la siguiente manera:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* `src`: Carpeta que contiene el código fuente de la aplicación.
+* [src/components](https://github.com/Jonnathan23/Frontend-SmartCeramic-Advisor/tree/main/src/components): Carpeta que contiene los componentes de la aplicación.
+* [src/hooks](https://github.com/Jonnathan23/Frontend-SmartCeramic-Advisor/tree/main/src/hooks): Carpeta que contiene los hooks de la aplicación.
+* [src/services](https://github.com/Jonnathan23/Frontend-SmartCeramic-Advisor/tree/main/src/services): Carpeta que contiene los servicios de la aplicación.
+* [src/utils](https://github.com/Jonnathan23/Frontend-SmartCeramic-Advisor/tree/main/src/utils): Carpeta que contiene las utilidades de la aplicación.
+* `public`: Carpeta que contiene los archivos estáticos de la aplicación.
+* `index.html`: Archivo que contiene el código HTML de la aplicación.
+* `vite.config.ts`: Archivo de configuración de Vite.
+
+## Contribuciones
+
+Si deseas contribuir al proyecto, por favor, sigue los siguientes pasos:
+
+1. Crea un fork del repositorio.
+2. Realiza los cambios que desees.
+3. Crea un pull request.
+
+Gracias por considerar contribuir al proyecto.
