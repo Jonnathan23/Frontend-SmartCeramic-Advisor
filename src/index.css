@@ -286,9 +286,8 @@ body {
 
 /* Ceramic Details */
 .container-main {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;  
+  width: 100%;
+
 }
 
 /* container-others */
@@ -470,6 +469,7 @@ body {
   transform: translateX(100%);
   pointer-events: none;
   height: 0;
+  width: 0;
 }
 
 .aside {
@@ -539,6 +539,86 @@ body {
   box-shadow: 12px 12px 10px 1px rgba(12, 55, 106, 0.29);
   -webkit-box-shadow: 12px 12px 10px 1px rgba(12, 55, 106, 0.29);
   -moz-box-shadow: 12px 12px 10px 1px rgba(12, 55, 106, 0.29);
+}
+
+/*? CeramicChat */
+.all-chat {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  background-color: var(--industrial-background);
+  padding: 1rem 2rem;
+  border-radius: .8rem;
+  box-shadow: 10px 10px 16px -2px rgba(75, 103, 124, 0.33);
+  -webkit-box-shadow: 10px 10px 16px -2px rgba(75, 108, 124, 0.33);
+  -moz-box-shadow: 10px 10px 16px -2px rgba(75, 105, 124, 0.33);
+
+}
+
+.chat {
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 50rem;
+  scroll-behavior: smooth;
+  border-radius: .8rem;
+}
+
+.chat::-webkit-scrollbar {
+  width: .5rem;
+  /* ancho de la barra */
+  transition: width .3s ease;
+  /* animación al hover */
+}
+
+.chat:hover::-webkit-scrollbar {
+  width: .7rem;
+  /* se ensancha al pasar el ratón */
+}
+
+.chat::-webkit-scrollbar-track {
+  background: transparent;
+  /* sin fondo */
+}
+
+.chat::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, .3);
+  /* color inicial */
+  border-radius: .25rem;
+  transition: background-color .3s ease;
+}
+
+.chat:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, .5);
+  /* más visible al hover */
+}
+
+/* ————— Scrollbar Firefox ————— */
+.chat {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, .3) transparent;
+}
+
+/* ————— Animación de mensajes ————— */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Aplica animación a cada hijo directo (.MarkdownRenderer) */
+.chat>* {
+  opacity: 0;
+  animation: fadeInUp .3s ease forwards;
 }
 
 /** |-----|| Individual Elements ||-----|*/

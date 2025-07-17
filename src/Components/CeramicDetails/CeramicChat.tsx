@@ -49,12 +49,11 @@ export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat
     }
 
     return (
-        <div>
-            <div>
+        <div className="all-chat">
+            <div className="chat">
                 {textChat.map((text, index) =>
                     <MarkdownRenderer key={index} content={text} principal={ceramic?.Principal} isFirts={index === 0} />
                 )}
-
 
             </div>
             <form className="ceramic-container" onSubmit={handleSubmit(handleSubmitCeramicDetails)}>
