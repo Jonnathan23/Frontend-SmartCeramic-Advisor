@@ -379,6 +379,7 @@ body {
 
 .field {
   width: 100%;
+  background-color: transparent;
   padding: .5rem;
   border: none;
   border-bottom: 1px solid var(--blue-900);
@@ -976,4 +977,15 @@ body {
   font-size: 2rem;
   border-radius: .8rem;
   margin: 2rem 0;
+}
+
+.error-message {
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--pastel-red);
+  text-transform: uppercase;
+  background-color: #FEE2E2;
 }
