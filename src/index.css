@@ -984,8 +984,8 @@ body {
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 700;
+  font-family: var(--font);
   text-align: center;
   color: var(--pastel-red);
   text-transform: uppercase;
-  background-color: #FEE2E2;
 }

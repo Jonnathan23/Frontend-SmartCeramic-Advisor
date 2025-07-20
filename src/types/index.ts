@@ -17,4 +17,6 @@ export type CeramicForm = {
 //* |-----------------| | Auth | |-----------------|
 
 export type SignUpForm = z.infer<typeof signUpSchema>;
+export type SaveUser = Pick<SignUpForm, "email" | "username"> & { id: string };
+
 export type LoginForm = z.infer<typeof loginSchema>;

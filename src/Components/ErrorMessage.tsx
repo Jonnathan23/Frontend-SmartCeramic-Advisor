@@ -6,7 +6,7 @@ type ErrorMessageProps = {
 
 export default function ErrorMessage({ children }: ErrorMessageProps) {
     return (
-        <div className="">
+        <div className="error-message">
             {children}
         </div>
     )
