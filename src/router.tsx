@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppLayout from "./Layouts/AppLayout";
-import CeramicDetails from "./pagesss_temp/CeramicDetails";
+import CeramicDetails from "./pages/CeramicDetails";
 import NotFoundLayout from "./Layouts/NotFoundLayout";
 import AuthLayout from "./Layouts/AuthLayout";
 
