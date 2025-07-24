@@ -1,4 +1,4 @@
-import { Link, Navigate, NavLink, Outlet } from "react-router-dom";
+import { Link, Navigate, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useLogin } from "../hooks/useAuth.use";
@@ -25,10 +25,19 @@ export default function AppLayout() {
         localStorage.setItem('userId', JSON.stringify(data.id))
     }, [data])
 
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        localStorage.removeItem('threads')
+        localStorage.removeItem('userId')
+        navigate('/auth')
+
+    }
     // 5) Ahora sí puedes condicionar renders y redirecciones
     if (!user || isError) return <Navigate to="/auth" />
     if (isLoading) return <div>Loading...</div>
-    
+
     return (<>
         <div className="app-layout">
             <header className="app-header">
@@ -40,8 +49,7 @@ export default function AppLayout() {
                 </div>
                 <nav className="app-nav">
                     <NavLink to="/" className={({ isActive }) => (isActive ? "active" : "header__nav-element")}> Buscador de Ceramicas </NavLink>
-                    <NavLink to="/home" className={({ isActive }) => (isActive ? "active" : "header__nav-element")}> Cuenta </NavLink>
-                    <NavLink to="/home" className={({ isActive }) => (isActive ? "active" : "header__nav-element header__nav-element--logout")}> Cerrar Sesión </NavLink>
+                    <NavLink to="/auth" onClick={handleLogout} className={({ isActive }) => (isActive ? "active" : "header__nav-element header__nav-element--logout")}> Cerrar Sesión </NavLink>
                 </nav>
             </header>
             <div className="app-content">
