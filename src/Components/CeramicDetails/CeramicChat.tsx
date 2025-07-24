@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import type { CeramicDetails, CeramicForm } from "../../types";
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
 
 import 'react-image-crop/dist/ReactCrop.css'
@@ -21,6 +21,8 @@ type CeramicChatProps = {
 export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat, imageSrc, setImageSrc }: CeramicChatProps) {
 
     const [imagesMain, setImagesMain] = useState<string[]>([]);
+    const [listeningVoice, setListeningVoice] = useState(false)
+    const recognitionRef = useRef<SpeechRecognition | null>(null)
 
     useEffect(() => {
         if (ceramic) {
@@ -30,7 +32,24 @@ export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat
     }, [ceramic])
 
     //* Form
-    const { register, reset, handleSubmit, setValue } = useForm<CeramicForm>();
+    const { register, reset, handleSubmit, setValue, watch } = useForm<CeramicForm>()
+    const mensajeValue = watch('mensaje')
+
+    //* Voice Recognition setup
+    useEffect(() => {
+        const SpeechRecognitionConstructor = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
+        if (!SpeechRecognitionConstructor) { console.warn('Browser does not support SpeechRecognition'); return }
+        const recognitionInstance = new SpeechRecognitionConstructor()
+        recognitionInstance.lang = 'es-ES'
+        recognitionInstance.continuous = true
+        recognitionInstance.interimResults = false
+        recognitionInstance.onresult = event => {
+            const transcript = event.results[event.results.length - 1][0].transcript
+            setValue('mensaje', transcript)  // aquí asignas al input
+        }
+        recognitionInstance.onend = () => listeningVoice && recognitionInstance.start()
+        recognitionRef.current = recognitionInstance
+    }, [listeningVoice, setValue])
 
     //*hooks
     const { handleImageChange } = useCeramicChat({ setImageSrc, setValue })
@@ -62,6 +81,11 @@ export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat
         toast.loading("Enviando...")
         // Pasamos formData + las dos variables calculadas
         mutate({ formData: data, isNewConversation, question })
+    }
+
+    const handleScoreVoice = () => {
+        if (recognitionRef.current && !listeningVoice) { recognitionRef.current.start(); setListeningVoice(true); }
+        else if (recognitionRef.current && listeningVoice) { recognitionRef.current.stop(); setListeningVoice(false); }
     }
 
     return (
@@ -103,6 +127,41 @@ export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat
                                         <path d="M4.698 4.034l16.302 7.966l-16.302 7.966a.503 .503 0 0 1 -.546 -.124a.555 .555 0 0 1 -.12 -.568l2.468 -7.274l-2.468 -7.274a.555 .555 0 0 1 .12 -.568a.503 .503 0 0 1 .546 -.124z" />
                                         <path d="M6.5 12h14.5" />
                                     </svg>
+                                )}
+                            </button>
+                            <button type="button" disabled={isPending} className="send-button button-chat" onClick={() => handleScoreVoice()}>
+                                {isPending ? (
+                                    <div className="spinner"></div>
+                                ) : (listeningVoice ?
+                                    <svg
+                                        className="incon-chat"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="32"
+                                        height="32"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                    >
+                                        <path d="M17 4h-10a3 3 0 0 0 -3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3 -3v-10a3 3 0 0 0 -3 -3z" />
+                                    </svg>
+
+                                    :
+                                    <svg
+                                        className="incon-chat"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="32"
+                                        height="32"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="#166ce5"
+                                        strokeWidth="1"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    >
+                                        <path d="M18 8a3 3 0 0 1 0 6" />
+                                        <path d="M10 8v11a1 1 0 0 1 -1 1h-1a1 1 0 0 1 -1 -1v-5" />
+                                        <path d="M12 8h0l4.524 -3.77a.9 .9 0 0 1 1.476 .692v12.156a.9 .9 0 0 1 -1.476 .692l-4.524 -3.77h-8a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h8" />
+                                    </svg>
+
                                 )}
                             </button>
                             <label className='button-chat' htmlFor="image" >
