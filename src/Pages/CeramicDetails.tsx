@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { CeramicDetails } from "../types";
+import type { CeramicDetails, Chat } from "../types";
 import { isThereOthersCeramics } from "../utils/policies";
 import OtherCeramic from "../Components/CeramicDetails/OtherCeramic";
 import AsideMenu from "../Components/CeramicDetails/AsideMenu";
@@ -9,10 +9,12 @@ export default function CeramicDetails() {
     const [ceramic, setCeramic] = useState<CeramicDetails | null>(null);
     const [textChat, setTextChat] = useState<string[]>([]);
     const [imageSrc, setImageSrc] = useState<string>('');
+    const [allChatsId, setAllChatId] = useState<Chat['threadId'][]>([]);
 
     useEffect(() => {
         const ceramicStorage = localStorage.getItem('ceramic');
         const textChatStorage = localStorage.getItem('textChat');
+        const allChatsIdStorage = localStorage.getItem('threads');
         if (ceramicStorage) {
             setCeramic(JSON.parse(ceramicStorage));
         }
@@ -21,15 +23,20 @@ export default function CeramicDetails() {
             setTextChat(JSON.parse(textChatStorage));
         }
 
+        if (allChatsIdStorage) {
+            setAllChatId(JSON.parse(allChatsIdStorage));
+        }
+
     }, [])
 
+    console.log(ceramic);
 
 
 
     return (
         <>
             <div className="container-main">
-                <AsideMenu setImageSrc={setImageSrc} setTextChat={setTextChat} setCeramic={setCeramic} />
+                <AsideMenu setImageSrc={setImageSrc} setTextChat={setTextChat} setCeramic={setCeramic} threadsId={allChatsId} />
                 <main>
                     <CeramicChat ceramic={ceramic} setCeramic={setCeramic} textChat={textChat} setTextChat={setTextChat} imageSrc={imageSrc} setImageSrc={setImageSrc} />
                 </main>

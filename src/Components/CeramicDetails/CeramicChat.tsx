@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import type { CeramicDetails, CeramicForm } from "../../types";
-import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
 
 import 'react-image-crop/dist/ReactCrop.css'
@@ -20,6 +20,14 @@ type CeramicChatProps = {
 
 export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat, imageSrc, setImageSrc }: CeramicChatProps) {
 
+    const [imagesMain, setImagesMain] = useState<string[]>([]);
+    useEffect(() => {
+        if (ceramic) {
+            const images: string[] = ceramic.imagenPrincipal.filter((image: string | null) => image !== null) as string[];
+            setImagesMain(images);
+        }
+    },[ceramic])
+
     //* Form
     const { register, reset, handleSubmit, setValue } = useForm<CeramicForm>();
 
@@ -27,7 +35,7 @@ export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat
     const { handleImageChange } = useCeramicChat({ setImageSrc, setValue })
 
     //* Mutations
-    const { mutate, isPending } = useSubmitCeramicDetails({ setCeramic, textChat, setTextChat, setImageSrc, reset })
+    const { mutate, isPending } = useSubmitCeramicDetails({ setCeramic, textChat, setTextChat, setImageSrc, reset, setImagesMain })
 
     const handleSubmitCeramicDetails = (data: CeramicForm) => {
         if (ceramic && ceramic.thread_id) {
@@ -37,7 +45,7 @@ export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat
             toast.error("Debes escribir tu pregunta o subir una imagen");
             return
         }
-
+        toast.loading("Enviando...");
         mutate({ formData: data });
     }
 
@@ -57,7 +65,7 @@ export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat
                         </div>
                     </section>
                 ) : (textChat.map((text, index) =>
-                    <MarkdownRenderer key={index} content={text} principal={ceramic?.Principal} isLast={index === (textChat.length - 1)} />
+                    <MarkdownRenderer key={index} content={text} principal={ceramic?.Principal} isLast={index === (textChat.length - 1)} images={imagesMain} confianza={ceramic?.probabilidadPrincipal} />
                 ))}
 
             </div>

@@ -1,13 +1,19 @@
 import { useForm } from "react-hook-form";
 import type { SignUpForm } from "../../types";
+import { useSignUp } from "../../hooks/useAuth.use";
+import { submitSignUpFirebase } from "../../services/UserService.api";
+import { useState } from "react";
+import ErrorMessage from "../ErrorMessage";
 
 export default function SignUp() {
 
     const { register, reset, handleSubmit, formState: { errors }, watch } = useForm<SignUpForm>();
 
-    const handleSubmitLogin = (formData: SignUpForm) => {
+    const [isLoading, setIsLoading] = useState(false);
 
-    }
+    const { mutate, isPending } = useSignUp(reset);
+
+    const handleSubmitLogin = (formData: SignUpForm) => submitSignUpFirebase({ formData, mutate, setIsLoading })
 
     return (
         <>
@@ -17,9 +23,12 @@ export default function SignUp() {
                     <div className="cont--field">
                         <label className="label--field" htmlFor="email">Email</label>
                         <input className="field" type="email" id="email" placeholder="Ej. ejemplo@gmail.com"
-                            {...register("email", { required: "El email es requerido" })}
+                            {...register("email", {
+                                required: "El email es requerido",
+                                pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "El email no es válido" }
+                            })}
                         />
-                        {errors.email && <p className="error">{errors.email.message}</p>}
+                        {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
                     </div>
                     <div className="cont--field">
                         <label className="label--field" htmlFor="username">Nombre de usuario</label>
@@ -29,7 +38,7 @@ export default function SignUp() {
                                 minLength: { value: 3, message: "El nombre de usuario debe tener al menos 3 caracteres" }
                             })}
                         />
-                        {errors.username && <p className="error">{errors.username.message}</p>}
+                        {errors.username && <ErrorMessage>{errors.username.message}</ErrorMessage>}
                     </div>
                     <div className="cont--field">
                         <label className="label--field" htmlFor="password">Contraseña</label>
@@ -39,21 +48,21 @@ export default function SignUp() {
                                 minLength: { value: 6, message: "La contraseña debe tener al menos 6 caracteres" }
                             })}
                         />
-                        {errors.password && <p className="error">{errors.password.message}</p>}
+                        {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
                     </div>
                     <div className="cont--field">
-                        <label className="label--field" htmlFor="password">Confirmar contraseña</label>
-                        <input className="field" type="password" id="password" placeholder="Confirmar Contraseña"
+                        <label className="label--field" htmlFor="confirm-password">Confirmar contraseña</label>
+                        <input className="field" type="password" id="confirm-password" placeholder="Confirmar Contraseña"
                             {...register("confirmPassword", {
                                 required: "La confirmacion de contraseña es requerida",
                                 minLength: { value: 6, message: "La contraseña debe tener al menos 6 caracteres" },
                                 validate: (value) => value === watch("password") || "Las contraseñas no coinciden"
                             })}
                         />
-                        {errors.confirmPassword && <p className="error">{errors.confirmPassword.message}</p>}
+                        {errors.confirmPassword && <ErrorMessage>{errors.confirmPassword.message}</ErrorMessage>}
                     </div>
                     <div className="cont--button">
-                        <button className="button">Registrarse</button>
+                        <button className="button" disabled={isPending || isLoading}>Registrarse</button>
                     </div>
                 </form>
             </div>

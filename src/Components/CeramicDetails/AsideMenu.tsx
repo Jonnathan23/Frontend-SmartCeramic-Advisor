@@ -1,15 +1,16 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
-import type { CeramicDetails } from "../../types";
+import type { CeramicDetails, Chat } from "../../types";
 import { useNewMessage } from "../../hooks/useCeramicChat.use";
 
 type AsideMenuProps = {
     setImageSrc: Dispatch<SetStateAction<string>>
     setTextChat: React.Dispatch<React.SetStateAction<string[]>>
     setCeramic: React.Dispatch<React.SetStateAction<CeramicDetails | null>>
+    threadsId: Chat['threadId'][]
 }
 
 
-export default function AsideMenu({ setImageSrc, setTextChat, setCeramic }: AsideMenuProps) {
+export default function AsideMenu({ setImageSrc, setTextChat, setCeramic, threadsId }: AsideMenuProps) {
     const [showMenuDetails, setShowMenuDetails] = useState(false);
 
     const { newConversation } = useNewMessage({ setImageSrc, setTextChat, setCeramic })
@@ -45,25 +46,53 @@ export default function AsideMenu({ setImageSrc, setTextChat, setCeramic }: Asid
                     </svg>
                     <p>Nueva busqueda</p>
                 </button>
-                <button className="aside__button">
-                    <svg
-                        className="aside__button__icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#f9f9f3"
-                        strokeWidth="1"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    >
-                        <path d="M12 8l0 4l2 2" />
-                        <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
-                    </svg>
-                    <p>Busquedas anteriores</p>
+                <div className="aside__search">
+                    <button className="aside__button" disabled>
+                        <svg
+                            className="aside__button__icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#f9f9f3"
+                            strokeWidth="1"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M12 8l0 4l2 2" />
+                            <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
+                        </svg>
+                        <p>Busquedas anteriores</p>
+                    </button>
 
-                </button>
+                    {threadsId.length > 0 ? (
+                        threadsId.map((threadId, index) => (
+                            <button key={index} className="aside__button">
+                                <svg
+                                    className="aside__button__icon"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="32"
+                                    height="32"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="#f9f9f3"
+                                    strokeWidth="1"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M12 8l0 4l2 2" />
+                                    <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
+                                </svg>
+                                <p>Busqueda {index + 1}</p>
+                            </button>
+                        ))
+                    ) : (
+                        <button  className="aside__button">                            
+                            <p>Sin anteriores</p>
+                        </button>
+                    )}
+                </div>
 
             </aside>
         </>
