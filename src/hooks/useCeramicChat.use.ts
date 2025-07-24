@@ -4,6 +4,8 @@ import { type Dispatch, type SetStateAction } from "react"
 import type { CeramicDetails, CeramicForm } from "../types"
 import type { UseFormSetValue } from "react-hook-form"
 import { cleanCeramicDetailsStorage } from "../utils/utils"
+import { useMutation } from "@tanstack/react-query"
+import { createChat, updateConversation } from "../services/CeramicDetails.api"
 
 type UseCeramicChatProps = {
     setImageSrc: Dispatch<SetStateAction<string>>
@@ -53,4 +55,20 @@ export const useNewMessage = ({ setImageSrc, setTextChat, setCeramic }: Pick<Use
         setCeramic(null)
     }
     return { newConversation }
+}
+
+export const useCreateChat = () => {
+    return useMutation({
+        mutationFn: createChat,
+        onSuccess: () => { console.log("Chat creado (spring)") },
+        onError: () => { console.log("Error creando chat (spring)") },
+    })
+}
+
+export const useUpdateChat = () => {
+    return useMutation({
+        mutationFn: updateConversation,
+        onSuccess: () => { console.log("Chat actualizado (spring)") },
+        onError: () => { console.log("Error actualizando chat (spring)") },
+    })
 }

@@ -243,7 +243,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
+
 }
 
 .ceramic-assistant__title {
@@ -317,6 +317,219 @@ body {
   }
 
 }
+
+/*? Auth*/
+.cont--auth {
+  height: 100dvh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-card);
+}
+
+/* Auth */
+.panels-container {
+  width: 90%;
+  margin: auto;
+  background-color: var(--white);
+  padding: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  border-radius: .8rem;
+
+}
+
+/* Login */
+.cont--form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2rem;
+  border-radius: .8rem;
+}
+
+.auth--title {
+  color: var(--blue-900);
+}
+
+.form--login {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2rem;
+  border-radius: .8rem;
+}
+
+.cont--field {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.label--field {
+  color: var(--blue-900);
+}
+
+.field {
+  width: 100%;
+  background-color: transparent;
+  padding: .5rem;
+  border: none;
+  border-bottom: 1px solid var(--blue-900);
+  outline: none;
+  color: var(--text-secondary);
+}
+
+.field::placeholder {
+  color: var(--text-secondary);
+}
+
+.cont--button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+.button {
+  background-color: var(--blue-900);
+  color: var(--white);
+  border: none;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+  border-radius: .8rem;
+}
+
+.button:hover {
+  background-color: var(--blue-300);
+  transition: background-color 0.5s ease;
+}
+
+.button--no-account {
+  background-color: transparent;
+  color: var(--blue-900);
+  text-decoration: underline;
+  border: none;
+  cursor: pointer;
+  border-radius: .8rem;
+}
+
+
+/* Sign up*/
+.form--sign-up {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2rem;
+}
+
+
+@media (min-width: 464px) {
+  .auth--title {
+    width: 100%;
+    text-align: center;
+  }
+
+  .panels-container {
+    padding: 0;
+    display: flex;
+    gap: 0;
+    position: relative;
+    flex-direction: row;
+    width: 90%;
+    margin: auto;
+
+    transition: all 0.6s ease;
+    background-color: transparent;
+  }
+
+  .panel {
+    min-height: 43.5rem;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    transition: background-color .9s ease, transform .9s ease;
+  }
+
+  .panel--left {
+    background: var(--industrial-background);
+    border-radius: 1.8rem 0 0 1.8rem;
+    color: var(--scandi-text);
+    box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+    -webkit-box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+    -moz-box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+  }
+
+  .panel--right {
+
+    background: var(--blue-900);
+    color: var(--white);
+    box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+    -webkit-box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+    -moz-box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+  }
+
+  /* Al invertir, rotamos en X los paneles con translate */
+  .panels-container.reversed .panel--left {
+    transform: translateX(100%);
+    box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+    -webkit-box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+    -moz-box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+  }
+
+  .panels-container.reversed .panel--right {
+    transform: translateX(-100%);
+    box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+    -webkit-box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+    -moz-box-shadow: 21px 9px 25px -1px rgba(0, 39, 88, 0.35);
+  }
+
+  .cont--button--no-account {
+    width: 100%;
+    height: 100%;
+    min-height: 35rem;
+    display: flex;
+    justify-content: center;
+    align-items: center
+  }
+
+  .button--no-account {
+    background-color: var(--white);
+    padding: 1rem 2rem;
+    text-decoration: none;
+    transition: background-color 0.5s ease;
+    color: var(--blue-900);
+    color: var();
+  }
+
+  .button--no-account:hover {
+    background-color: var(--blue-300);
+    color: var(--white);
+    transition: background-color 0.5s ease;
+  }
+}
+
+@media (min-width: 964px) {
+  .panels-container {
+    max-width: 80rem;
+    height: 40rem;
+  }
+}
+
 
 
 /** |-----|| Components  ||-----|*/
@@ -528,6 +741,62 @@ body {
   box-shadow: 12px 12px 10px 1px rgba(12, 55, 106, 0.29);
   -webkit-box-shadow: 12px 12px 10px 1px rgba(12, 55, 106, 0.29);
   -moz-box-shadow: 12px 12px 10px 1px rgba(12, 55, 106, 0.29);
+}
+
+.aside__search {
+  display: flex;
+  /* apilar botones en columna */
+  flex-direction: column;
+  gap: 0.5rem;
+  /* separación entre botones */
+  max-height: 400px;
+  /* ajusta según tu diseño */
+  padding-right: 0.5rem;
+  /* espacio para la scrollbar */
+  overflow-y: auto;
+  /* habilita scroll vertical */
+  scroll-behavior: smooth;
+  /* desplazamiento suave */
+}
+
+/* Opcional: estilado del scrollbar (WebKit) */
+.aside__search::-webkit-scrollbar {
+  width: 8px;
+}
+
+.aside__search::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.aside__search::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.aside__search::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.container-main-images {
+  max-height: 10rem;
+  max-width: 10rem;
+  margin: auto;
+  margin-top: 2rem;
+}
+
+@media (min-width: 424px) {
+  .container-main-images {
+    max-height: 25rem;
+    max-width: 25rem;
+  }    
+}
+
+@media (min-width: 768px) {
+  .container-main-images {
+    max-height: 25rem;    
+  }
+    
 }
 
 /*? CeramicChat */
@@ -764,4 +1033,51 @@ body {
   font-size: 2rem;
   border-radius: .8rem;
   margin: 2rem 0;
+}
+
+.error-message {
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  font-family: var(--font);
+  text-align: center;
+  color: var(--pastel-red);
+  text-transform: uppercase;
+}
+
+.ceramic-container-other__images {
+  display: flex;
+  /* para alinear las imágenes en fila */
+  gap: 1rem;
+  /* separación opcional entre ellas */
+  padding: 0.5rem;
+  /* un poco de espacio interior */
+  overflow-x: auto;
+  /* habilita scroll horizontal */
+  scroll-behavior: smooth;
+  /* desplazamiento suave */
+}
+
+/* Cada imagen no encoge ni crece */
+.ceramic-container-other__image {
+  flex: 0 0 auto;
+}
+
+/* Opcional: estilado del scrollbar (WebKit) */
+.ceramic-container-other__images::-webkit-scrollbar {
+  height: 6px;
+}
+
+.ceramic-container-other__images::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.ceramic-container-other__images::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.ceramic-container-other__images::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
