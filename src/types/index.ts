@@ -1,11 +1,12 @@
 import { z } from 'zod';
-import type { ceramicDetailsSchema, chatSchema } from '../utils/ceramicDetails.schema';
+import type { ceramicDetailsSchema, chatSchema, othersCeramicsSchema } from '../utils/ceramicDetails.schema';
 import type { loginSchema, signUpSchema, userSchema } from '../utils/auth.schema';
 
 
 //* |-----------------| | CeramicDetails | |-----------------|
 
 export type CeramicDetails = z.infer<typeof ceramicDetailsSchema>;
+export type OtherCheramic = z.infer<typeof othersCeramicsSchema>;
 
 export type CeramicForm = {
     mensaje?: string;

@@ -743,6 +743,62 @@ body {
   -moz-box-shadow: 12px 12px 10px 1px rgba(12, 55, 106, 0.29);
 }
 
+.aside__search {
+  display: flex;
+  /* apilar botones en columna */
+  flex-direction: column;
+  gap: 0.5rem;
+  /* separación entre botones */
+  max-height: 400px;
+  /* ajusta según tu diseño */
+  padding-right: 0.5rem;
+  /* espacio para la scrollbar */
+  overflow-y: auto;
+  /* habilita scroll vertical */
+  scroll-behavior: smooth;
+  /* desplazamiento suave */
+}
+
+/* Opcional: estilado del scrollbar (WebKit) */
+.aside__search::-webkit-scrollbar {
+  width: 8px;
+}
+
+.aside__search::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.aside__search::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.aside__search::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.container-main-images {
+  max-height: 10rem;
+  max-width: 10rem;
+  margin: auto;
+  margin-top: 2rem;
+}
+
+@media (min-width: 424px) {
+  .container-main-images {
+    max-height: 25rem;
+    max-width: 25rem;
+  }    
+}
+
+@media (min-width: 768px) {
+  .container-main-images {
+    max-height: 25rem;    
+  }
+    
+}
+
 /*? CeramicChat */
 .all-chat {
   width: 100%;
@@ -988,4 +1044,40 @@ body {
   text-align: center;
   color: var(--pastel-red);
   text-transform: uppercase;
+}
+
+.ceramic-container-other__images {
+  display: flex;
+  /* para alinear las imágenes en fila */
+  gap: 1rem;
+  /* separación opcional entre ellas */
+  padding: 0.5rem;
+  /* un poco de espacio interior */
+  overflow-x: auto;
+  /* habilita scroll horizontal */
+  scroll-behavior: smooth;
+  /* desplazamiento suave */
+}
+
+/* Cada imagen no encoge ni crece */
+.ceramic-container-other__image {
+  flex: 0 0 auto;
+}
+
+/* Opcional: estilado del scrollbar (WebKit) */
+.ceramic-container-other__images::-webkit-scrollbar {
+  height: 6px;
+}
+
+.ceramic-container-other__images::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.ceramic-container-other__images::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.ceramic-container-other__images::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
