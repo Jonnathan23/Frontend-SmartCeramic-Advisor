@@ -18,4 +18,36 @@ export const userSchema = z.object({
     email: z.string().email(),
     username: z.string(),
     threads: z.array(z.string())
+
 })
+
+/* iniciar sesion
+get 
+{
+    id: z.string(),    
+    username: string
+    threads: []
+}
+
+a.threads[0]
+b.threads[1]
+c.threads[2]
+
+
+get by id Conversation -->
+{
+    id: threads
+    questions:[]
+    answers:[]
+}
+
+
+post create conversation
+{
+    id: z.string(),
+    questions:[]
+    answers:[]
+}
+
+
+*/

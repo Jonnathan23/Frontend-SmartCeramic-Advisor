@@ -1,11 +1,11 @@
 import { useContext } from 'react'
 import { toast } from 'react-toastify'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type { UseFormReset } from 'react-hook-form'
 
 import { AuthContext } from '../firebase/AuthContext'
-import { signUp } from '../services/UserService.api'
-import type { SignUpForm } from '../types'
+import { getUser, signUp } from '../services/UserService.api'
+import type { SignUpForm, User } from '../types'
 
 /**
  * @description Hook que “consume” el Contexto
@@ -31,3 +31,10 @@ export const useSignUp = (reset: UseFormReset<SignUpForm>) => {
 }
 
 
+export const useLogin = (loginID: User['id']) => {
+    return useQuery({
+        queryKey: ['user'],
+        queryFn: () => getUser({ loginID }),
+        enabled: !!loginID
+    })
+}
