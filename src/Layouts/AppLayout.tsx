@@ -9,6 +9,7 @@ export default function AppLayout() {
     const user: UserFirebase = JSON.parse(localStorage.getItem('user') ?? '');
     const { data, isError, isLoading } = useLogin(user.idFirebase ?? '');
     useEffect(() => {
+        console.log('seteando threads');
         if (data) {
             const threadId = data.threads
             localStorage.setItem('threads', JSON.stringify(threadId));

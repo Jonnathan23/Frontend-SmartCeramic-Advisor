@@ -66,8 +66,8 @@ export default function AsideMenu({ setImageSrc, setTextChat, setCeramic, thread
                         <p>Busquedas anteriores</p>
                     </button>
 
-                    {threadsId.length > 0 ? (
-                        threadsId.map((threadId, index) => (
+                    {threadsId && threadsId.length > 0 ? (
+                        threadsId.map((index) => (
                             <button key={index} className="aside__button">
                                 <svg
                                     className="aside__button__icon"
@@ -88,7 +88,7 @@ export default function AsideMenu({ setImageSrc, setTextChat, setCeramic, thread
                             </button>
                         ))
                     ) : (
-                        <button  className="aside__button">                            
+                        <button className="aside__button">
                             <p>Sin anteriores</p>
                         </button>
                     )}
