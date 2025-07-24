@@ -120,3 +120,6 @@ export const loginFirebase = async ({ loginData, setIsLoading }: Pick<UserApi, "
     }
 
 }
+
+
+//* Patch

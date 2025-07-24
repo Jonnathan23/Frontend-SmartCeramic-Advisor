@@ -3,10 +3,18 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useLogin } from "../hooks/useAuth.use";
 import type { UserFirebase } from "../types";
+import { useEffect } from "react";
 
 export default function AppLayout() {
     const user: UserFirebase = JSON.parse(localStorage.getItem('user') ?? '');
     const { data, isError, isLoading } = useLogin(user.idFirebase ?? '');
+    useEffect(() => {
+        if (data) {
+            const threadId = data.threads
+            localStorage.setItem('threads', JSON.stringify(threadId));
+            localStorage.setItem('userId', JSON.stringify(data.id));
+        }
+    }, [data])
 
     if (isLoading) return <div>Loading...</div>
     if (isError || !data) return <Navigate to="/auth" />

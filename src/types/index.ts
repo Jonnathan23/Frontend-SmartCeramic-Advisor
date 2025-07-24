@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { ceramicDetailsSchema } from '../utils/ceramicDetails.schema';
+import type { ceramicDetailsSchema, chatSchema } from '../utils/ceramicDetails.schema';
 import type { loginSchema, signUpSchema, userSchema } from '../utils/auth.schema';
 
 
@@ -31,4 +31,13 @@ export type errorResponse = {
         code: number,
         message: string,
     }
+}
+
+//* |-----------------| | Chats | |-----------------|
+export type Chat = z.infer<typeof chatSchema>;
+export type UpdateChatForm = Pick<Chat, "questions" | "answers">
+export type ChatForm = {
+    threadId: string,
+    question: string,
+    answer: string
 }

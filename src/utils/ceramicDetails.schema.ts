@@ -19,3 +19,13 @@ export const newceramicDetailsSchema = z.object({
         imagen: z.string()
     })),
 });
+
+
+export const chatSchema = z.object({
+    id: z.number(),
+    threadId: z.string(),
+    questions: z.array(z.string()),
+    answers: z.array(z.string()),
+})
+
+export const allChatSchema = z.array(chatSchema)

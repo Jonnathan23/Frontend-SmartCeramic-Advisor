@@ -33,7 +33,7 @@ export const useSignUp = (reset: UseFormReset<SignUpForm>) => {
 }
 
 
-export const useLogin = (loginID: User['id']) => {
+export const useLogin = (loginID: User['idFirebase']) => {
     return useQuery({
         queryKey: ['user'],
         queryFn: () => getUser({ loginID }),
