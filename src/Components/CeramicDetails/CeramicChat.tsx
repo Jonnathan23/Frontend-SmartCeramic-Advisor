@@ -8,6 +8,12 @@ import { useSubmitCeramicDetails } from "../../hooks/useCeramicDetails.use";
 import { useCeramicChat, useCreateChat, useUpdateChat } from "../../hooks/useCeramicChat.use";
 import { toast } from "react-toastify";
 
+declare global {
+    interface Window {
+        webkitSpeechRecognition: typeof SpeechRecognition
+        SpeechRecognition: typeof SpeechRecognition
+    }
+}
 
 type CeramicChatProps = {
     ceramic: CeramicDetails | null
@@ -37,15 +43,19 @@ export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat
 
     //* Voice Recognition setup
     useEffect(() => {
-        const SpeechRecognitionConstructor = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition
-        if (!SpeechRecognitionConstructor) { console.warn('Browser does not support SpeechRecognition'); return }
+        const SpeechRecognitionConstructor: new () => SpeechRecognition =
+            window.SpeechRecognition || window.webkitSpeechRecognition
+        if (!SpeechRecognitionConstructor) {
+            console.warn('Browser does not support SpeechRecognition')
+            return
+        }
         const recognitionInstance = new SpeechRecognitionConstructor()
         recognitionInstance.lang = 'es-ES'
         recognitionInstance.continuous = true
         recognitionInstance.interimResults = false
-        recognitionInstance.onresult = event => {
-            const transcript = event.results[event.results.length - 1][0].transcript
-            setValue('mensaje', transcript)  // aquí asignas al input
+        recognitionInstance.onresult = (event: SpeechRecognitionEvent) => {
+            const transcript: string = event.results[event.results.length - 1][0].transcript
+            setValue('mensaje', transcript)
         }
         recognitionInstance.onend = () => listeningVoice && recognitionInstance.start()
         recognitionRef.current = recognitionInstance
@@ -117,7 +127,7 @@ export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat
                 <div className="chat-form">
                     <label htmlFor="message" className="chat-form__label">Pregúntanos</label>
                     <div className="input-container">
-                        <input className="chat-form__input" type="text" {...register("mensaje")} placeholder="Escribe tu pregunta" />
+                        <input className="chat-form__input" type="text" {...register("mensaje")} placeholder="Escribe tu pregunta" value={mensajeValue} />
                         <div className="send-button-container">
                             <button type="submit" disabled={isPending} className="send-button button-chat">
                                 {isPending ? (
