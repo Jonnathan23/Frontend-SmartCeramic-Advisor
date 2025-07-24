@@ -6,7 +6,7 @@ export type CeramicDetailsApi = {
     formData: CeramicForm
     thread_id: string
     updateChatFormData: UpdateChatForm
-    chatData: ChatForm
+    chatData: ChatForm,
 }
 
 
@@ -35,10 +35,11 @@ export const submitCeramicDetails = async ({ formData }: Pick<CeramicDetailsApi,
             console.error("Validation failed:", response.error);
             return {} as CeramicDetails;
         }
-        return response.data
+        return response.data;
 
     } catch (error) {
         console.log("Error getting ceramic details:", error);
+        return {} as CeramicDetails;
     }
 }
 

@@ -66,7 +66,7 @@ export default function AsideMenu({ setImageSrc, setTextChat, setCeramic, thread
                         <p>Busquedas anteriores</p>
                     </button>
 
-                    {threadsId.length > 0 ? (
+                    {threadsId && threadsId.length > 0 ? (
                         threadsId.map((threadId, index) => (
                             <button key={index} className="aside__button">
                                 <svg

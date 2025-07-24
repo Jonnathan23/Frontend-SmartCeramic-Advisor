@@ -14,22 +14,25 @@ export default function CeramicDetails() {
     useEffect(() => {
         const ceramicStorage = localStorage.getItem('ceramic');
         const textChatStorage = localStorage.getItem('textChat');
-        const allChatsIdStorage = localStorage.getItem('threads');
+        const threadsStorage = localStorage.getItem('threads');
         if (ceramicStorage) {
-            setCeramic(JSON.parse(ceramicStorage));
+            const ceramicSt = JSON.parse(ceramicStorage)
+            setCeramic(ceramicSt);
         }
 
         if (textChatStorage) {
             setTextChat(JSON.parse(textChatStorage));
         }
 
-        if (allChatsIdStorage) {
-            setAllChatId(JSON.parse(allChatsIdStorage));
+        if (threadsStorage) {
+            console.log('threadsStorage actualizados');
+            setAllChatId(JSON.parse(threadsStorage));
         }
 
     }, [])
 
     console.log(ceramic);
+    console.log(allChatsId);
 
 
 

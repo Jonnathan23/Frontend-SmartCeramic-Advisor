@@ -5,7 +5,7 @@ import MarkdownRenderer from "../MarkdownRenderer";
 
 import 'react-image-crop/dist/ReactCrop.css'
 import { useSubmitCeramicDetails } from "../../hooks/useCeramicDetails.use";
-import { useCeramicChat } from "../../hooks/useCeramicChat.use";
+import { useCeramicChat, useCreateChat, useUpdateChat } from "../../hooks/useCeramicChat.use";
 import { toast } from "react-toastify";
 
 
@@ -21,12 +21,13 @@ type CeramicChatProps = {
 export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat, imageSrc, setImageSrc }: CeramicChatProps) {
 
     const [imagesMain, setImagesMain] = useState<string[]>([]);
+
     useEffect(() => {
         if (ceramic) {
             const images: string[] = ceramic.imagenPrincipal.filter((image: string | null) => image !== null) as string[];
             setImagesMain(images);
         }
-    },[ceramic])
+    }, [ceramic])
 
     //* Form
     const { register, reset, handleSubmit, setValue } = useForm<CeramicForm>();
@@ -35,18 +36,32 @@ export default function CeramicChat({ ceramic, setCeramic, textChat, setTextChat
     const { handleImageChange } = useCeramicChat({ setImageSrc, setValue })
 
     //* Mutations
-    const { mutate, isPending } = useSubmitCeramicDetails({ setCeramic, textChat, setTextChat, setImageSrc, reset, setImagesMain })
+    const { mutate: mutateCreateChat } = useCreateChat();
+    const { mutate: mutateUpdateChat } = useUpdateChat();
+    const { mutate, isPending } = useSubmitCeramicDetails({ setCeramic, textChat, setTextChat, setImageSrc, reset, setImagesMain, mutateCreateChat, mutateUpdateChat, })
 
     const handleSubmitCeramicDetails = (data: CeramicForm) => {
-        if (ceramic && ceramic.thread_id) {
+        // Determinar si es nueva conversación
+        const isNewConversation = !(
+            ceramic !== null &&
+            typeof ceramic.thread_id === "string"
+        )
+
+        if (ceramic?.thread_id) {
             data.thread_id = ceramic.thread_id
         }
+
         if (!data.imagen && !data.mensaje) {
-            toast.error("Debes escribir tu pregunta o subir una imagen");
+            toast.error("Debes escribir tu pregunta o subir una imagen")
             return
         }
-        toast.loading("Enviando...");
-        mutate({ formData: data });
+
+        // Preparar texto de pregunta
+        const question = data.mensaje ? data.mensaje : "Subiste una imagen"
+
+        toast.loading("Enviando...")
+        // Pasamos formData + las dos variables calculadas
+        mutate({ formData: data, isNewConversation, question })
     }
 
     return (
