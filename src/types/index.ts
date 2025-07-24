@@ -17,8 +17,18 @@ export type CeramicForm = {
 //* |-----------------| | Auth | |-----------------|
 
 export type SignUpForm = z.infer<typeof signUpSchema>;
-export type SaveUser = Pick<SignUpForm, "email" | "username"> & { id: string };
+export type SaveUser = Pick<SignUpForm, | "username"> & { idFirebase: string, threads: string[] };
+export type UserFirebase = Pick<SignUpForm, | "username"> & { idFirebase: string };
 
 export type LoginForm = z.infer<typeof loginSchema>;
 
 export type User = z.infer<typeof userSchema>;
+
+
+//* |-----------------| | Firabase | |-----------------|
+export type errorResponse = {
+    error: {
+        code: number,
+        message: string,
+    }
+}

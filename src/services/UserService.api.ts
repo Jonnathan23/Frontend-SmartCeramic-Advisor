@@ -1,20 +1,21 @@
 import type { UseMutateFunction } from "@tanstack/react-query"
 import { springApi } from "../lib/axios"
-import type { LoginForm, SaveUser, SignUpForm, User } from "../types"
+import type { LoginForm, SaveUser, SignUpForm, User, UserFirebase } from "../types"
 import { createUserWithEmailAndPassword, getIdToken, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { firebaseAuth } from "../firebase/firebaseConfig"
 import type { Dispatch, SetStateAction } from "react"
 import { toast } from "react-toastify"
 import { userSchema } from "../utils/auth.schema"
-import { useLogin } from "../hooks/useAuth.use"
+import { FirebaseError } from 'firebase/app'
 
 export type UserApi = {
     formData: SignUpForm
     saveUser: SaveUser
     loginData: LoginForm
-    loginID: User['id']
+    loginID: User['idFirebase']
     mutate: UseMutateFunction<string | undefined, Error, Pick<UserApi, "saveUser">, unknown>
     setIsLoading: Dispatch<SetStateAction<boolean>>
+    userId: User['id']
 }
 
 
@@ -27,9 +28,9 @@ export type UserApi = {
  */
 export const signUp = async ({ saveUser }: Pick<UserApi, "saveUser">) => {
     try {
-        const url = `/sign-up`;
-        const { data } = await springApi.post<string>(url, saveUser);
-        return data
+        const url = `/api/users`;
+        await springApi.post(url, saveUser);
+        return "Registrado correctamente";
     } catch (error) {
         console.log("Error registrando:", error);
         toast.error('Error al registrarse')
@@ -46,21 +47,25 @@ export const submitSignUpFirebase = async ({ formData, mutate, setIsLoading }: P
     setIsLoading(true)
     try {
         const credential = await createUserWithEmailAndPassword(firebaseAuth, email, password)
-        await updateProfile(credential.user, { displayName: username })
-        const useEmail = credential.user.email ?? email
+        await updateProfile(credential.user, { displayName: username })        
         const userName = credential.user.displayName ?? username
 
         const saveUser: SaveUser = {
-            id: credential.user.uid,
-            email: useEmail,
-            username: userName
+            idFirebase: credential.user.uid,            
+            username: userName,
+            threads: []
         }
         mutate({ saveUser });
 
     } catch (error) {
-        console.log("Error registrando con firebase:", error);
-        toast.error('Error al registrarse', { toastId })
-
+        console.log("Error registrando con firebase:", error)
+        toast.dismiss(toastId)
+        if (error instanceof FirebaseError) {
+            toast.error(error.message)
+            return
+        }
+        // fallback para errores inesperados
+        toast.error("Error desconocido al registrar")
     } finally {
         setIsLoading(false)
     }
@@ -70,7 +75,7 @@ export const submitSignUpFirebase = async ({ formData, mutate, setIsLoading }: P
 //* Login
 export const getUser = async ({ loginID }: Pick<UserApi, "loginID">) => {
     try {
-        const url = `/sign-in/${loginID}`;
+        const url = `/api/users/firebase/${loginID}`;
         const { data } = await springApi.get(url);
         const response = userSchema.safeParse(data);
         if (!response.success) {
@@ -92,21 +97,26 @@ export const loginFirebase = async ({ loginData, setIsLoading }: Pick<UserApi, "
     try {
         // 1. Autenticación en Firebase
         const credential = await signInWithEmailAndPassword(firebaseAuth, email, password)
-        // 2. Obtener token para backend
+
         const idToken = await getIdToken(credential.user, true)
-        // 3. Preparar payload
-        const user: SaveUser = {
-            id: credential.user.uid,
-            email: credential.user.email!,
+        const loginUser: UserFirebase = {
+            idFirebase: credential.user.uid,            
             username: credential.user.displayName ?? ''
         }
 
-        const { data } = useLogin({ loginID: user.id })
-
+        // 4. Retornar todo para tu mutación
+        localStorage.setItem('user', JSON.stringify(loginUser))
+        localStorage.setItem('token', idToken)
+        console.log('Login exitoso', loginUser, idToken);
+        return true
     } catch (error) {
-        console.error('Error en Firebase login:', error)
-        toast.error('Credenciales inválidas', { id: toastId })
+        console.log("Error iniciando sesión:", error);
+        toast.dismiss(toastId)
+        toast.error('Credenciales inválidas')
+        setIsLoading(false)
+        return false
     } finally {
         setIsLoading(false)
     }
+
 }

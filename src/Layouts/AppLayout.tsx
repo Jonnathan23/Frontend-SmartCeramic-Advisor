@@ -1,9 +1,16 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, Navigate, NavLink, Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useLogin } from "../hooks/useAuth.use";
+import type { UserFirebase } from "../types";
 
 export default function AppLayout() {
-    return (
+    const user: UserFirebase = JSON.parse(localStorage.getItem('user') ?? '');
+    const { data, isError, isLoading } = useLogin(user.idFirebase ?? '');
+
+    if (isLoading) return <div>Loading...</div>
+    if (isError || !data) return <Navigate to="/auth" />
+    if (data) return (
         <>
             <div className="app-layout">
                 <header className="app-header">
